@@ -1,0 +1,65 @@
+﻿@model IntranetPublic.Models.UserHomePageViewModel
+
+@{
+    Layout = @"~/Views/UserHomePage/_LayoutUserHomePage.cshtml";
+    ViewBag.Title = Model.User.full_name + (Model.CurrentPageId == 0 ? "" : " - " + Model.CurrentPageTitle);
+    ViewBag.LinkToHome = @Model.User.login_name.ToLower();
+    ViewBag.IdItem = Model.IdItem;
+    ViewBag.BootstrapTheme = Model.StaffInfo.STYL == "standard" ? "" : "-" + Model.StaffInfo.STYL;
+    ViewBag.CurrentPageId = Model.CurrentPageId;
+}
+
+@if (Model.CurrentPageId == 0 && Model.StaffInfo.SHOW_HEADER == "block")
+{
+    <div class="well row">
+
+        @if (Model.StaffInfo.SHOW_FOTO == "block")
+        {
+            <div class="col-md-2">
+                <img src="http://www.vutbr.cz/www_base/fotka.php?perid=@(Model.StaffInfo.ID_OSOBY)" class="img-thumbnail">
+            </div>
+        }
+
+        <div class="col-md-10">
+            <h4 class="headerLogo">
+                <a href="http://www.math.fme.vutbr.cz">
+                    <img src="~/Content/img/UM_color_RGB_1.png" border="0" width="182" height="45">
+                    @*<span style="vertical-align: bottom; color: #005070">ústav matematiky</span>*@
+                </a>
+            </h4>
+
+            @if (Model.StaffInfo.ODBOR != "O")
+            {
+                <h5><span>@Model.StaffInfo.Department.NAZEV_1029</span></h5>
+            }
+            <h3 style="margin-top:5px; margin-bottom:5px">
+                @Model.StaffInfo.JMENO
+            </h3>
+
+            @if (Model.StaffInfo.FUNKCE1 != "")
+            {
+                <h5>
+                    <span class="label label-default">
+                        @Model.StaffInfo.FUNKCE1
+                    </span>
+                </h5>
+            }
+
+            @*@Html.DisplayFor(m => Model.StaffInfo.EMAIL, "EmailAddress")*@
+
+            <a href="mailto:@Model.StaffInfo.EMAIL" class="btn btn-default">@Model.StaffInfo.EMAIL</a>
+
+            <h4>
+                <span class="label label-default">@Model.StaffInfo.TELEFON </span>&nbsp;
+                <span class="label label-default">@Model.StaffInfo.MISTNOST.Replace("[K4]", "Kolejní 4, ")</span>
+            </h4>
+        </div>
+    </div>
+}
+
+@Html.Raw(Model.CurrentBody)
+
+@section Navigation
+{
+    @{ Html.RenderPartial("_NavigationUserHomePage", Model); }
+}

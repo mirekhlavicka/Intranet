@@ -1,0 +1,21 @@
+﻿@model IntranetPublic.Models.UserHomePageViewModel
+
+@foreach (var up in Model.UserPages.Take(5))
+{
+    <li class="@(Model.CurrentPageId==up.id_userpage ? "active" : "")"><a href="~/@Model.User.login_name.ToLower()/@up.url">@up.name</a></li>
+}
+
+
+@if (Model.UserPages.Count() > 5)
+{
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Další ...<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            @foreach (var up in Model.UserPages.Skip(5))
+                {
+                <li class="@(Model.CurrentPageId==up.id_userpage ? "active" : "")"><a href="~/@Model.User.login_name.ToLower()/@up.url">@up.name</a></li>
+            }
+        </ul>
+    </li>
+}

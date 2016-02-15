@@ -1,0 +1,19 @@
+﻿@model IntranetPublic.Models.UserHomePageViewModel
+
+@{
+    Layout = @"~/Views/UserHomePage/_LayoutUserHomePage.cshtml";
+    ViewBag.Title = Model.User.full_name + " - rozvrh";
+    ViewBag.LinkToHome = @Model.User.login_name.ToLower();
+    ViewBag.IdItem = Model.IdItem;
+    ViewBag.BootstrapTheme = Model.StaffInfo.STYL == "standard" ? "" : "-" + Model.StaffInfo.STYL;
+    ViewBag.CurrentPageId = Model.CurrentPageId;
+}
+
+@{
+    Html.RenderAction("Index", "TimeTable", new { uid = Model.IdItem });
+}
+
+@section Navigation
+{
+    @{ Html.RenderPartial("_NavigationUserHomePage", Model); }
+}

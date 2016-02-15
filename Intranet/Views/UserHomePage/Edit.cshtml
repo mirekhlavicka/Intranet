@@ -1,0 +1,353 @@
+﻿@model Intranet.Models.UserHomePageViewModel
+
+@{
+    ViewBag.Title = "Moje stránky";
+}
+
+<div class="panel panel-info" style="margin-bottom:10px; margin-top:5px">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span id="spanCurrentName">@(Model.CurrentPage != null ? Model.CurrentPage.name : "Úvod")</span></h3>
+    </div>
+    <div class="panel-body">
+        <a href="@Model.CurrentPageUrl" target="_blank" id="aCurrentUrl">
+            <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+            <span id="spanCurrentUrl">@Model.CurrentPageUrl</span>
+        </a>
+    </div>
+</div>
+
+<div class="btn-toolbar" role="toolbar" aria-label="..." style="margin-bottom:10px">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnSave">
+            <i class="glyphicon glyphicon-save"></i>
+            <span>Uložit</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btnNewPage">
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>Nová stránka</span>
+        </button>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnDeletePage">
+            <i class="glyphicon glyphicon-trash"></i>
+            <span>Smazat</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btnRenamePage">
+            <i class="glyphicon glyphicon-pencil"></i>
+            <span>Přejmenovat</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btnShowHidePage" style="width: 100px">
+            <i class="glyphicon glyphicon-transfer"></i>
+            <span id="showHideTitle">@(Model.CurrentPage == null || Model.CurrentPage.show ? "Skrýt" : "Zobrazit")</span>
+        </button>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnMoveBackward" data-direction="-1">
+            <i class="glyphicon glyphicon-arrow-left" title="Přesunout v menu do leva"></i>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btnMoveForward" data-direction="1">
+            <i class="glyphicon glyphicon-arrow-right" title="Přesunout v menu do prava"></i>
+        </button>
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnSettings" data-toggle="modal" data-target="#modalSettings" data-keyboard="true">
+            <i class="glyphicon glyphicon-cog"></i>
+            <span>Nastavení</span>
+        </button>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSettings" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nastavení</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.BootstrapTheme, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => Model.BootstrapTheme, new SelectListItem[] {
+                                new SelectListItem { Value = "standard", Text = "- Výchozí -" },
+                                new SelectListItem { Value = "cerulean", Text = "Cerulean" },
+                                new SelectListItem { Value = "cosmo", Text = "Cosmo" },
+                                new SelectListItem { Value = "cyborg", Text = "Cyborg" },
+                                new SelectListItem { Value = "darkly", Text = "Darkly" },
+                                new SelectListItem { Value = "flatly", Text = "Flatly" },
+                                new SelectListItem { Value = "journal", Text = "Journal" },
+                                new SelectListItem { Value = "lumen", Text = "Lumen" },
+                                new SelectListItem { Value = "paper", Text = "Paper" },
+                                new SelectListItem { Value = "readable", Text = "Readable" },
+                                new SelectListItem { Value = "sandstone", Text = "Sandstone" },
+                                new SelectListItem { Value = "simplex", Text = "Simplex" },
+                                new SelectListItem { Value = "slate", Text = "Slate" },
+                                new SelectListItem { Value = "spacelab", Text = "Spacelab" },
+                                new SelectListItem { Value = "superhero", Text = "Superhero" },
+                                new SelectListItem { Value = "united", Text = "United" }                                
+                               },  new { @class = "form-control" } )
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => Model.ShowHeader)
+                                @Html.LabelFor(m => Model.ShowHeader)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => Model.ShowPhoto)
+                                @Html.LabelFor(m => Model.ShowPhoto)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => Model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => Model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Room, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => Model.Room, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSaveSettings">Uložit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<nav class="navbar navbar-default" style="background-color:#555555; margin-bottom:10px">
+    <div class="container-fluid">
+        <div id="pageList">
+            @*@{Html.RenderPartial("_PageList", Model.UserPages, new ViewDataDictionary { { "CurrentPage", Model.CurrentPage } });}*@
+            @{Html.RenderAction("RefreshPageList", new { id_userpage_current = Model.CurrentPageId });}
+        </div>
+    </div>
+</nav>
+
+@Html.TextAreaFor(model => model.CurrentBody, htmlAttributes: new { @class = "form-control", rows = "10", style = "max-width: 2000px; display: none" })
+
+@section Scripts
+{
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            CKEDITOR.on('instanceReady', function () {
+                CKEDITOR.instances.CurrentBody.resize('100%', window.innerHeight - $(CKEDITOR.instances.CurrentBody.container.$).offset().top - 65, false)
+            });
+
+            CKEDITOR.replace('CurrentBody', {
+                language: 'cs',
+                //contentsCss:'/Content/bootstrap.min.css',
+                filebrowserBrowseUrl: '/UserFiles/Browse?select=1',
+                filebrowserImageBrowseUrl: '/UserFiles/Browse?select=1&filter=1',
+                filebrowserUploadUrl: '/UserFiles/Upload'
+                //filebrowserImageUploadUrl: '/uploader/upload.php?type=Images'
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        var id_userpage = @Model.CurrentPageId;
+
+        var saveAndGet = function(id_userpage_get) {
+            $.post('@Url.Action("SaveAndGet")',
+                {
+                    id_userpage_save: id_userpage,
+                    id_userpage_get: id_userpage_get,
+                    body: CKEDITOR.instances.CurrentBody.getData()
+                }, function (data) {
+                    id_userpage = id_userpage_get;
+                    CKEDITOR.instances.CurrentBody.setData(data.body);
+                    $('#spanCurrentUrl').text(data.url);
+                    $('#aCurrentUrl').prop('href',data.url);
+                    $('#spanCurrentName').text(data.name);
+                    $('#showHideTitle').text(data.show ? 'Skrýt' : 'Zobrazit');
+                });
+        }
+
+        var refreshPageList = function(id_userpage_current){
+            $.post('@Url.Action("RefreshPageList")',
+                {
+                    id_userpage_current: id_userpage_current
+                }, function (data) {
+                    $('#pageList').html(data);
+                    if(id_userpage_current != id_userpage){
+                        saveAndGet(id_userpage_current);
+                        id_userpage = id_userpage_current;
+                    }
+                });
+        }
+
+
+        $(function () {
+            $(document ).on('click', '#userPages a[data-id_userpage]', function () {
+                var id_userpage_get = $(this).data('id_userpage');
+                $('#userPages li').removeClass('active');
+                $('#userPages a[data-id_userpage=' + id_userpage_get + ']').closest('li').addClass('active')
+                saveAndGet(id_userpage_get);
+            })
+
+            $('#btnSave').click(function () {
+                saveAndGet(id_userpage);
+            })
+
+            $('#btnSaveSettings').click(function () {
+                $.post('@Url.Action("SaveSettings")',
+                    {
+                        id_userpage: id_userpage,
+                        showHeader: $('#ShowHeader').prop('checked'),
+                        showPhoto: $('#ShowPhoto').prop('checked'),
+                        bootstrapTheme: $('#BootstrapTheme').val(),
+                        fullName: $('#FullName').val(),
+                        phone: $('#Phone').val(),
+                        room: $('#Room').val()
+                    }, function (data) {
+                        //bootbox.alert("Nastavení bylo uloženo");
+                    });
+            })
+
+            $('#btnNewPage').click(function(){
+                bootbox.prompt({
+                    title: "Zadejte název nové stránky",
+                    value: "Nová stránka",
+                    callback: function(result) {
+                        if (!(result === null)) {
+                            $.post('@Url.Action("NewPage")',
+                                {
+                                    name: result
+                                }, function (data) {
+                                    refreshPageList(data.id_userpage_new);
+                                });
+                        }
+                    }
+                });
+            })
+
+            $('#btnDeletePage').click(function(){
+                if(id_userpage == 0){
+                    bootbox.alert("Nelze smazat úvodní stránku");
+                    return;
+                }
+
+                bootbox.confirm({
+                    message : "Opravdu si přejete smazat stránku '" + $('#userPages a[data-id_userpage=' + id_userpage + ']').text() + "' ?",
+                    callback : function(result) {
+                        if(result == true){
+                            $.post('@Url.Action("DeletePage")',
+                                {
+                                    id_userpage: id_userpage
+                                }, function (data) {
+                                    id_userpage = -1;
+                                    refreshPageList(0);
+                                });
+                        }
+                    }
+                });
+            });
+
+            $('#btnRenamePage').click(function(){
+                if(id_userpage == 0){
+                    bootbox.alert("Nelze přejmenovat úvodní stránku");
+                    return;
+                }
+
+                bootbox.prompt({
+                    title: "Zadejte nový název stránky",
+                    value: $('#userPages a[data-id_userpage=' + id_userpage + ']').text(),
+                    callback: function(result) {
+                        if (!(result === null)) {
+                            $.post('@Url.Action("RenamePage")',
+                                {
+                                    id_userpage: id_userpage,
+                                    name: result
+                                }, function (data) {
+                                    refreshPageList(id_userpage);
+                                    saveAndGet(id_userpage);
+                                });
+                        }
+                    }
+                });
+            })
+
+
+            $('#btnShowHidePage').click(function(){
+                if(id_userpage == 0){
+                    bootbox.alert("Nelze skrýt úvodní stránku");
+                    return;
+                }
+
+                $.post('@Url.Action("ShowHidePage")',
+                    {
+                        id_userpage: id_userpage
+                    }, function (data) {
+                        $('#showHideTitle').text(data.show ? 'Skrýt' : 'Zobrazit');
+                        refreshPageList(id_userpage);
+                    });
+            })
+
+            $('#btnMoveBackward,#btnMoveForward').click(function(){
+                if(id_userpage == 0){
+                    bootbox.alert("Nelze přesouvat úvodní stránku");
+                    return;
+                }
+
+                $.post('@Url.Action("MovePage")',
+                    {
+                        id_userpage: id_userpage,
+                        direction: $(this).data('direction')
+
+                    }, function (data) {
+                        if(data.notShown){
+                            bootbox.alert("Stránka není zobrazena v menu");
+                        } else {
+                            refreshPageList(id_userpage)
+                        }
+                    });
+            })
+
+
+
+            bootbox.setDefaults({
+                locale: "cs"
+            });
+        })
+
+    </script>
+}

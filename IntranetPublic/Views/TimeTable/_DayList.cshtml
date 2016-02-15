@@ -1,0 +1,32 @@
+﻿@model IntranetPublic.Models.TimeTableViewModel[]
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr class="info">
+            <th>Den</th>
+            @for (int hour = 0; hour < Model[0].Hours.Length; hour++)
+            {
+                <th style="width:6%">
+                    @(7 + hour).00<br>@(7 + hour).50
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int day = 1; day <= 5; day++)
+        {
+            <tr>
+                <th>
+                    @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.DayNames[Model[day - 1].Day]
+                </th>
+                @for (int hour = 0; hour < Model[day - 1].Hours.Length; hour++)
+                {
+                    <td class="@("timeTableHour" + Model[day - 1].Hours[hour].Type)">
+                        @Model[day - 1].Hours[hour].Text
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+

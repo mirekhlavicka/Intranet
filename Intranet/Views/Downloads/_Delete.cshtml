@@ -1,0 +1,63 @@
+﻿@model Intranet.Models.DownloadViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Opravdu si přejete smazat tuhle položku?</h4>
+</div>
+
+<div class="modal-body">
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.course_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.course_code)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.File.name)*@
+            Soubor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.File.name)
+        </dd>
+
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Ne</button>
+        <input class="btn btn-danger" type="submit" value="Ano" />
+    </div>
+}

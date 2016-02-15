@@ -1,0 +1,86 @@
+﻿@model IntranetPublic.Models.TimeTableViewModel[]
+
+@{
+    ViewBag.Title = "Rozvrh " + @ViewBag.UserFullName;
+}
+
+@*<h1>@ViewBag.UserFullName</h1>*@
+
+<style>
+    .timeTableHour1 {
+        background-color: #99ffff;
+    }
+
+    .timeTableHour2 {
+        background-color: #ffcc66;
+    }
+
+    .timeTableHour3 {
+        background-color: #cccccc;
+    }
+
+    .timeTableHour4 {
+        background-color: #ffffcc;
+    }
+
+    .timeTableHour5 {
+        background-color: #ffcccc;
+    }
+
+    .modal-timeTable {
+        width: 800px;
+    }
+</style>
+
+@if (ViewBag.ddlUser != null)
+{
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Rozvrh zaměstnance
+        </div>
+        <div class="panel-body">
+            @Html.DropDownList("ddlUser", null, "- Vyberte -", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+}
+
+<div id="dayList">
+    @{ Html.RenderPartial("_DayList", Model); }
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">Vysvětlivky</div>
+    <div class="panel-body">
+        <table class="table table-bordered" style="margin-bottom: 0px">
+            <tbody>
+                <tr>
+                    <td class="timeTableHour1">&nbsp;Cvičení&nbsp;</td>
+                    <td class="timeTableHour2">&nbsp;Přednáška&nbsp;</td>
+                    <td class="timeTableHour3">&nbsp;Konzultace&nbsp;</td>
+                    <td class="timeTableHour4">&nbsp;Pobyt v ústavu&nbsp;</td>
+                    <td class="timeTableHour5">&nbsp;Jiná aktivita&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (ViewBag.ddlUser == null)
+{
+    @Html.ActionLink("Rozvrhy všech zaměstnanců ÚM", "Index", "TimeTable", new { uid = (int?)null}, null)
+}
+
+@section Scripts {
+    @if (ViewBag.ddlUser != null)
+    {
+
+        <script type="text/javascript">
+            $(
+                $('#ddlUser').change(function () {
+                    var url = '@(Url.Action("Index", new { uid = "[uid]" }))';
+                    url = url.replace('[uid]', $(this).val());
+                    window.location =url;
+                }));
+        </script>
+    }
+}

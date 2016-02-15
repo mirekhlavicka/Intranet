@@ -1,0 +1,19 @@
+﻿@model IntranetPublic.Models.UserHomePageViewModel
+
+@{
+    Layout = @"~/Views/UserHomePage/_LayoutUserHomePage.cshtml";
+    ViewBag.Title = Model.User.full_name + " - soubory ke stažení";
+    ViewBag.LinkToHome = @Model.User.login_name.ToLower();
+    ViewBag.IdItem = Model.IdItem;
+    ViewBag.BootstrapTheme = Model.StaffInfo.STYL == "standard" ? "" : "-" + Model.StaffInfo.STYL;
+    ViewBag.CurrentPageId = Model.CurrentPageId;
+}
+
+@{
+    Html.RenderAction("Index", "Downloads", new { id_item_user = Model.IdItem });
+}
+
+@section Navigation
+{
+    @{ Html.RenderPartial("_NavigationUserHomePage", Model); }
+}

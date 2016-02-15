@@ -1,0 +1,167 @@
+﻿@using Intranet.Utils
+@model Intranet.Models.TimeTableViewModel[]
+
+@{
+    ViewBag.Title = "Rozvrh";
+}
+
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Layout = @"~/Views/TimeTable/_LayoutNotAuth.cshtml";
+        ViewBag.Title = "Rozvrh " + @ViewBag.UserFullName;
+    }
+}
+
+@*@if (!User.Identity.IsAuthenticated)
+{
+    <h1>@ViewBag.UserFullName</h1>
+}*@
+
+<div class="panel panel-info" style="margin-bottom:10px; margin-top:5px">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span id="spanCurrentName">Rozvrh@(User.Identity.IsAuthenticated ? "" : " - " + ViewBag.UserFullName)</span></h3>
+    </div>
+    <div class="panel-body">
+        <a href="@ViewBag.TimeTableUrl" target="_blank" id="aCurrentUrl">
+            <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+            <span id="spanCurrentUrl">@ViewBag.TimeTableUrl</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    .timeTableHour1 {
+        background-color: #99ffff;
+    }
+
+    .timeTableHour2 {
+        background-color: #ffcc66;
+    }
+
+    .timeTableHour3 {
+        background-color: #cccccc;
+    }
+
+    .timeTableHour4 {
+        background-color: #ffffcc;
+    }
+
+    .timeTableHour5 {
+        background-color: #ffcccc;
+    }
+
+    .modal-timeTable {
+        width: 800px;
+    }
+</style>
+
+<div id="dayList">
+    @{ Html.RenderPartial("_DayList", Model); }
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Vysvětlivky</div>
+    <div class="panel-body">
+        <table class="table table-bordered" style="margin-bottom: 0px">
+            <tbody>
+                <tr>
+                    <td class="timeTableHour1">&nbsp;Cvičení&nbsp;</td>
+                    <td class="timeTableHour2">&nbsp;Přednáška&nbsp;</td>
+                    <td class="timeTableHour3">&nbsp;Konzultace&nbsp;</td>
+                    <td class="timeTableHour4">&nbsp;Pobyt v ústavu&nbsp;</td>
+                    <td class="timeTableHour5">&nbsp;Jiná aktivita&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade'>
+    <div class="modal-dialog modal-timeTable">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+            $.validator.setDefaults({
+                ignore: ""
+            });
+    </script>
+
+    <script type="text/javascript">
+
+        var refresh = function (url) {
+            $.post(url,
+                {
+                }, function (data) {
+                    $('#dayList').html(data);
+                });
+        }
+
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(document).ajaxComplete(function (event, request, settings) {
+                //re-parse the DOM after Ajax to enable client validation for any new form fields that have it enabled
+                $.validator.unobtrusive.parse(document);
+            });
+
+            $('#myModal').modal({
+                backdrop: true,
+                keyboard: true,
+                show: false
+            });
+
+
+
+            $(document).on('click', 'a[data-modal]', function (e) {
+                // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+                //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+
+                $('#myModalContent').html('');
+                $('#myModal').modal('show');
+
+                $('#myModalContent').load(this.href, function () {
+                    bindForm(this);
+                });
+                return false;
+            });
+        });
+
+
+
+        function bindForm(dialog) {
+            $('form', dialog).submit(function (e) {
+
+                if ($(this).valid()) {
+
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+                                $('#myModal').modal('hide');
+                                refresh(result.url);
+                            } else {
+                                $('#myModalContent').html(result);
+                                bindForm(dialog);
+                            }
+                        }
+                    });
+                }
+
+                e.preventDefault();
+                return false;
+            });
+        }
+    </script>
+
+}

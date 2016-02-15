@@ -1,0 +1,53 @@
+﻿@model Intranet.Models.TimeTableViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Rozvrh - @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.DayNames[Model.Day]</h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body" style="height:610px; overflow-y:scroll">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Day)
+            
+            @for (int hour = 0; hour < Model.Hours.Length; hour++)
+            {
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    @(7 + hour).00 -  @(7 + hour).50
+                </label>
+                
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Hours[hour].Text, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Hours[hour].Text, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-4">
+                    @*@Html.EditorFor(model => model.Hours[hour].Type, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @*@Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })*@
+
+                    @Html.DropDownListFor(model => model.Hours[hour].Type, new SelectList(new SelectListItem[] {
+                                new SelectListItem { Value = "0", Text = "- Volno -" },
+                                new SelectListItem { Value = "1", Text = "Cvičení" },
+                                new SelectListItem { Value = "2", Text = "Přednáška" },
+                                new SelectListItem { Value = "3", Text = "Konzultace" },
+                                new SelectListItem { Value = "4", Text = "Pobyt v ústavu" },
+                                new SelectListItem { Value = "5", Text = "Jiná aktivita" }
+                               }, "Value", "Text", Model.Hours[hour].Type), new { @class = "form-control" })
+                </div>
+
+            </div>
+            }
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Zrušit</button>
+        <input class="btn btn-primary" type="submit" value="Uložit" />
+    </div>
+}

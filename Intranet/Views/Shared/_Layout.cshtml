@@ -1,0 +1,71 @@
+﻿@using Intranet.Utils
+@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Intranet Ústavu matematiky</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic,300,300italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("Intranet Ústavu matematiky", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                <a href="~/" class="navbar-brand" title="Intranet Ústavu matematiky"><i class="glyphicon glyphicon-home"></i>@*<span>Intranet ÚM</span>*@</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown @(Url.MakeActiveClass("Articles", "*"))">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informace a dokumenty&nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", null))">@Html.ActionLink("Nástěnka", "Index", "Articles", routeValues: new { id = (int?)null }, htmlAttributes: new { id = "hpLink100" })</li>
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "-1"))">@Html.ActionLink("Aktuální informace", "Index", "Articles", routeValues: new { id = -1 }, htmlAttributes: new { id = "hpLink105" })</li>
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "44"))">@Html.ActionLink("Zápisy ze schůze", "Index", "Articles", routeValues: new { id = 44 }, htmlAttributes: new { id = "hpLink110" })</li>
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "45"))">@Html.ActionLink("Projekty a granty", "Index", "Articles", routeValues: new { id = 45 }, htmlAttributes: new { id = "hpLink120" })</li>
+
+                            
+                            @if (User.Identity.IsAuthenticated &&  new int[] {12, 34, 68 }.Contains(Int32.Parse(User.Identity.GetUserId())))
+                            {
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "27"))">@Html.ActionLink("Aktuality pro studenty", "Index", "Articles", routeValues: new { id = 27 }, htmlAttributes: new { id = "hpLink1110" })</li>
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "32"))">@Html.ActionLink("Pro doktorandy", "Index", "Articles", routeValues: new { id = 32 }, htmlAttributes: new { id = "hpLink1120" })</li>
+                            <li class="dropdown @(Url.MakeActiveClass("Articles", "115"))">@Html.ActionLink("Informace pro studenty závěrečných ročníků", "Index", "Articles", routeValues: new { id = 115 }, htmlAttributes: new { id = "hpLink1120" })</li>
+                            }
+
+
+                            <li><a href="/download.aspx?id_file=691">Organizační řád</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="@Url.MakeActiveClass("UserFiles")">@Html.ActionLink("Moje soubory", "Browse", "UserFiles", routeValues: null, htmlAttributes: new { id = "hpLink0" })</li>
+                    <li class="@Url.MakeActiveClass("UserHomePage")">@Html.ActionLink("Moje stránky", "Edit", "UserHomePage", routeValues: null, htmlAttributes: new { id = "hpLink1" })</li>
+                    <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Můj rozvrh", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
+                    <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Moje soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Ústav matematiky FSI VUT v Brně</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

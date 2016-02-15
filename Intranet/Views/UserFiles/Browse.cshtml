@@ -1,0 +1,492 @@
+﻿@model IEnumerable<Intranet.Models.FileViewModel>
+
+@{
+    ViewBag.Title = "Moje soubory";
+}
+
+@{
+    if (Request.QueryString["select"] != null)
+    {
+        Layout = @"~/Views/UserFiles/_LayoutBrowseSelect.cshtml";
+    }
+}
+
+@*http://v4-alpha.getbootstrap.com/components/forms/#inline-forms*@
+@*http://www.w3schools.com/bootstrap/bootstrap_forms.asp*@
+
+<style>
+    @@keyframes pulse {
+        0% {
+            background-color: #ffffff;
+        }
+
+        100% {
+            background-color: #c4e3f3;
+        }
+    }
+
+
+    .listItem {
+        display: inline-block;
+        width: 150px;
+        height: 190px;
+        overflow: hidden;
+        background-color: #e9e9e9;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 2px;
+        position: relative;
+        box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.4);
+        margin: 1px
+    }
+
+        .listItem a {
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+
+            .listItem a:focus {
+                outline: none;
+            }
+
+        .listItem img {
+            max-width: 128px;
+            max-height: 128px;
+        }
+
+        .listItem h6 {
+            margin: 0px;
+        }
+
+        .listItem:hover {
+            background-color: #c4e3f3;
+            outline-style: solid;
+            outline-color: #a4c3d3;
+            outline-width: 1px;
+        }
+
+    .newItem {
+        animation-name: pulse;
+        animation-duration: 300ms;
+        animation-timing-function: ease;
+        animation-iteration-count: 20;
+        animation-direction: alternate;
+    }
+
+    .clipboardItem {
+        opacity:0.3
+    }
+
+    .thumbContainer {
+        text-align: center;
+        width: 140px;
+        height: 138px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
+
+
+<div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px">
+    <div class="panel-body" style="padding:5px">
+        <div class="row">
+            <div class="form-inline col-md-3">
+
+                <label class="control-label" for="ddlSort"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> Řadit podle:</label>
+
+                @*<div>*@
+
+                @Html.DropDownList("ddlSort", new SelectListItem[] {
+                    new SelectListItem { Text = "Abecedy", Value = "0"},
+                    new SelectListItem { Text = "Data vložení", Value = "1", Selected = true},
+                    new SelectListItem { Text = "Velikosti", Value = "2"}
+                },
+                htmlAttributes: new { @class = "form-control" })
+                @*</div>*@
+
+            </div>
+
+            <div class="form-inline col-md-3">
+
+                <label class="control-label" for="ddlFilter"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Zobrazit:</label>
+
+                @*<div>*@
+
+                @Html.DropDownList("ddlFilter", new SelectListItem[] {
+                    new SelectListItem { Text = "Vše", Value = "0", Selected = (Request.QueryString["filter"] == null)},
+                    new SelectListItem { Text = "Jen obrázky", Value = "1", Selected = (Request.QueryString["filter"] == "1")},
+                    new SelectListItem { Text = "Bez obrázků", Value = "2"}
+                },
+                htmlAttributes: new { @class = "form-control" })
+                @*</div>*@
+            </div>
+
+            <div class="form-inline col-md-6">
+
+                <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hledat:</label>
+
+                @*<div>*@
+                @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control", style = "width:480px; max-width:480px" })
+                @*</div>*@
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="btn-toolbar" role="toolbar" aria-label="..." style="margin-bottom:5px">
+    <div class="btn-group">
+        <span class="btn btn-primary fileinput-button" @*style="margin-bottom:5px"*@>
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>Nahrát soubory</span>
+            <input id="fileupload" type="file" name="files" data-url="/UserFiles/Upload1" multiple>
+        </span>
+
+        <button type="button" class="btn btn-primary" id="btnNewFolder">
+            <i class="glyphicon glyphicon-folder-open"></i>
+            <span>&nbsp;Nová složka</span>
+        </button>
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnCheckAll">
+            <i class="glyphicon glyphicon-check"></i>
+            <span>Označit vše</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btnUncheckAll">
+            <i class="glyphicon glyphicon-unchecked"></i>
+            <span>Odznačit vše</span>
+        </button>
+
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="btnDeleteChecked">
+            <i class="glyphicon glyphicon-trash"></i>
+            <span>Smazat označené</span>
+        </button>
+    </div>
+    <div class="btn-group">
+
+        <button type="button" class="btn btn-primary" id="btnCutChecked">
+            <i class="glyphicon glyphicon-scissors"></i>
+            <span>&nbsp;Vyjmout označené</span>
+        </button>
+
+        <button type="button" class="btn btn-primary disabled" id="btnPaste">
+            <i class="glyphicon glyphicon-paste"></i>
+            <span>Vložit ze schránky</span>
+        </button>
+
+    </div>
+</div>
+
+
+<div id="progress" class="progress progress-striped" style="margin-bottom:5px">
+    <div class="progress-bar progress-bar-success"></div>
+</div>
+
+
+<div class="panel panel-default well well-sm" style="padding-top:0px; padding-bottom: 0px; margin-bottom: 0px">
+    <div id="fileList" class="panel-body" style="padding:5px">
+        @{Html.RenderPartial("_FileList", Model);}
+    </div>
+</div>
+
+<div id="context-menu">
+    <ul class="dropdown-menu" role="menu" style="cursor:pointer">
+        <li><a tabindex="-1" data-actionid="10">Otevřít</a></li>
+        <li class="divider"></li>
+        <li><a tabindex="-1" data-actionid="100">Přejmenovat</a></li>
+        <li><a tabindex="-1" data-actionid="110">Smazat</a></li>
+        <li><a tabindex="-1" data-actionid="120">Vyjmout</a></li>
+    </ul>
+</div>
+
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/fileupload")
+
+    @if (Request.QueryString["select"] == "1")
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(document ).on('click', '.fileItem', function (e) {
+                    var urlImage = $(this).data("url");
+                    window.opener.CKEDITOR.tools.callFunction(@Request.QueryString["CKEditorFuncNum"], urlImage);
+                    window.close();
+                });
+            });
+        </script>
+    } else if (Request.QueryString["select"] == "2")
+    {
+        <script type="text/javascript">
+                    $(document).ready(function () {
+                        $(document ).on('click', '.fileItem', function (e) {
+                            window.opener.fileSelected($(this).closest(".listItem").data("id"), $(this).closest(".listItem").data("name"), $(this).data("url"));
+                            window.close();
+                        });
+                    });
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(document ).on('click', '.fileItem', function (e) {
+                    var urlImage = $(this).data("url");
+                    window.open(urlImage);
+                });
+            });
+        </script>
+    }
+
+    <script type="text/javascript">
+        var id_folder = @ViewData["id_folder"];
+
+        var refresh = function(){
+            $.post('@Url.Action("Browse")',
+                {
+                    sort: $('#ddlSort').val(),
+                    filter: $('#ddlFilter').val(),
+                    search: $('#tbSearch').val(),
+                    id_folder: id_folder
+                }, function (data) {
+                    $('#fileList').html(data);
+                    setupContextMenu();
+                    resizeFileList();
+                    enbaleCheckedAction();
+                });
+        }
+
+        var enbaleCheckedAction = function(){
+            if($('.listItem input:checkbox:checked').length == 0){
+                $('#btnDeleteChecked').addClass('disabled');
+                $('#btnCutChecked').addClass('disabled');
+            } else {
+                $('#btnDeleteChecked').removeClass('disabled');
+                $('#btnCutChecked').removeClass('disabled');
+            }
+        }
+
+        //var enbaleDisableUpload = function(){
+        //    if(id_folder == 0){
+        //        $('#fileupload').fileupload('disable');
+        //        $('.fileinput-button').addClass('disabled');
+        //        $('#fileupload').prop('disabled', true);
+        //        //$('#btnPaste').addClass('disabled');
+        //    } else {
+        //        $('#fileupload').fileupload('enable');
+        //        $('.fileinput-button').removeClass('disabled');
+        //        $('#fileupload').prop('disabled', false);
+        //        //$('#btnPaste').removeClass('disabled');
+        //    }
+        //}
+
+        var resizeFileList = function() {$('#fileListItems').css('height', window.innerHeight - $('#fileListItems').offset().top- @(Request.QueryString["select"] != null ? 50 : 70))};
+
+        var setupContextMenu = function(){
+            $('.listItem').contextmenu({
+                target: '#context-menu',
+                onItem: function (context, e) {
+                    if($(e.target).data("actionid") == 10){
+                        setTimeout(function(){
+                            $(context).find('.folderLink').click();
+
+                            $(context).find('.fileItem').each(function () {
+                                var urlImage = $(this).data("url");
+                                window.open(urlImage);
+                            });
+
+                        });
+                    } else if($(e.target).data("actionid") == 100 && $(context).data("name") != "..."){
+                        bootbox.prompt({
+                            title: "Zadejte nový název",
+                            value: $(context).data("name"),
+                            callback: function(result) {
+                                if (!(result === null)) {
+                                    $.post('@Url.Action("Rename")',
+                                        {
+                                            name: result,
+                                            id: $(context).data("id")
+                                        }, function (data) {
+                                            refresh();
+                                        });
+                                }
+                            }
+                        });
+                    } else if ($(e.target).data("actionid") == 110) {
+                        if($(context).data("candelete") == 1){
+                            var list = $(context).data("id");
+                            bootbox.confirm({
+                                message : "Opravdu si přejete smazat " + $(context).data("name") + " ?",
+                                callback : function(result) {
+                                    if(result == true){
+                                        $.post('@Url.Action("Delete")',
+                                            {
+                                                list: list
+                                            }, function (data) {
+                                                refresh();
+                                            });
+                                    }
+                                }
+                            });
+
+                        } else {
+                            bootbox.alert("Nelze smazat");
+                        }
+                    } else if ($(e.target).data("actionid") == 120) {
+                        var list = $(context).data("id");
+                        $.post('@Url.Action("Cut")',
+                            {
+                                list: list
+                            }, function (data) {
+                                refresh();
+                                $('#btnPaste').removeClass('disabled');
+                            });
+                    }
+                }
+            });
+        }
+
+        $(function () {
+            $(document ).on('click', '.folderLink', function(){
+                id_folder = $(this).data('id_folder');
+
+                $('#fileupload').fileupload(
+                    'option',
+                    'formData',
+                    [{name: "id_folder", value: id_folder}]
+                );
+
+                $('#tbSearch').val('');
+                refresh();
+                //enbaleDisableUpload();
+            });
+
+            $(document ).on('change', '.listItem input:checkbox', function(){
+                enbaleCheckedAction();
+            });
+
+            $('#ddlSort').change(refresh);
+            $('#ddlFilter').change(refresh);
+            $('#tbSearch').keyup(refresh);
+
+            $('#fileupload').fileupload({
+                dataType: 'text',
+                sequentialUploads: true,
+                formData: [{name: "id_folder", value: id_folder}],
+                done: function (e, data) {
+                    $('.listItemFolder').last().after(data.result/*$(data.result).find('.listItem').css('background-color', '#c4e3f3')*/);
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                },
+                stop: function (e, data) {
+                    $('#progress .progress-bar').css(
+                        'width',
+                        '0%'
+                    );
+                    refresh();
+                }
+            });
+
+            $('#btnCheckAll').click(function(){$('.listItem input:checkbox').prop('checked', true); enbaleCheckedAction(); });
+            $('#btnUncheckAll').click(function(){$('.listItem input:checkbox').prop('checked', false); enbaleCheckedAction(); });
+
+            $('#btnDeleteChecked').click(function(){
+                //var list = $.map($('.listItem input:checkbox:checked'), function (e) { return $(e).data('id') }).join(',');
+                var list = $.map($('.listItem[data-candelete=1] input:checkbox:checked'), function (e) { return $(e).data('id') }).join(',');
+
+                if(list.length == 0){
+                    return;
+                }
+
+                bootbox.confirm({
+                    message : "Opravdu si přejete smazat označené soubory ?",
+                    callback : function(result) {
+                        if(result == true){
+                            $.post('@Url.Action("Delete")',
+                                {
+                                    list: list
+                                }, function (data) {
+                                    refresh();
+                                });
+                        }
+                    }
+                });
+            });
+
+            $('#btnCutChecked').click(function(){
+                var list = $.map($('.listItem input:checkbox:checked'), function (e) { return $(e).data('id') }).join(',');
+
+                if(list.length == 0){
+                    return;
+                }
+
+                $.post('@Url.Action("Cut")',
+                    {
+                        list: list
+                    }, function (data) {
+                        refresh();
+                        $('#btnPaste').removeClass('disabled');
+                    });
+            });
+
+            $('#btnPaste').click(function(){
+                $.post('@Url.Action("Paste")',
+                    {
+                        id_folder: id_folder
+                    }, function (data) {
+                        if(data.filesToRoot){
+                            bootbox.alert("Nelze vkládat soubory do kořenové složky");
+                        }
+                        refresh();
+                        $('#btnPaste').addClass('disabled');
+                    });
+            });
+
+
+
+
+            $('#btnNewFolder').click(function(){
+                bootbox.prompt({
+                    title: "Zadejte název nové složky",
+                    value: "Nová složka",
+                    callback: function(result) {
+                        if (!(result === null)) {
+                            $.post('@Url.Action("NewFolder")',
+                                {
+                                    name: result,
+                                    id_folder_parent: id_folder
+                                }, function (data) {
+                                    refresh();
+                                });
+                        }
+                    }
+                });
+            })
+
+
+            bootbox.setDefaults({
+                locale: "cs"
+            });
+
+            //enbaleDisableUpload();
+            enbaleCheckedAction();
+            setupContextMenu();
+
+
+
+            $(window).resize(resizeFileList);
+            resizeFileList();
+        })
+    </script>
+}

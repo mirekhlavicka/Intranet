@@ -1,0 +1,10 @@
+﻿@model Intranet.Models.DownloadViewModel
+
+<div>
+    <a id="fileName" href="@(Model != null ? "/download.aspx?id_file=" + Model.id_file : "javascript:void(0)")" class="btn btn-default btn-sm">@(Model != null && Model.File != null ? Model.File.name : "Soubor nevybrán")</a>
+    @Html.HiddenFor(model => model.id_file/*, new { @class = "form-control" }*/)
+    <button type="button" class="btn btn-primary btn-sm" id="btnSelectFile">
+        <i class="glyphicon glyphicon-hand-right"></i>
+        <span>Vybrat soubor na serveru</span>
+    </button>
+</div>

@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Intranet.Models.FileViewModel>
+
+@*http://www.iconarchive.com/tag/file*@
+
+@if (ViewData["path"] != null)
+{
+    <div style="margin-bottom:5px" id="currentPath">
+        <div class="btn-group">
+            <button class="btn btn-default btn-sm folderLink" data-id_folder="0">
+                <i class="glyphicon glyphicon-play"></i>
+                <span>Kořen</span>
+            </button>
+
+            @{
+                var path = (Folder[])ViewData["path"];
+
+                if (path != null && path.Length > 0)
+                {
+                    foreach (var f in path)
+                    {
+                        <button class="btn btn-default btn-sm folderLink" data-id_folder="@f.id_folder">
+                            <i class="glyphicon glyphicon-play"></i>
+                            <span>@(f.name)</span>
+                        </button>
+                    }
+                }
+            }
+        </div>
+    </div>
+    @:<div id="fileListItems" style="height:500px; overflow-y:scroll; padding-top:1px; padding-left:1px">
+    if (path != null && path.Length == 0 && Model.Count() == 0)
+    {
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Kořenová složka je prázdná!</h4>
+            <p>Založte nové podsložky a nahrejte soubory.</p>
+        </div>
+    }
+}
+
+@foreach (var file in Model)
+{
+    <div class="listItem @(file.Folder ? "listItemFolder" : "listItemFile") @(file.NewItem ? "newItem" : "") @(file.ClipboardItem ? "clipboardItem" : "")" data-toggle="context" data-id="@((file.Folder ? -1 : 1) * file.Id)" data-candelete="@(file.CanDelete ? 1 : 0)" data-name="@(file.Name)">
+        @if (/*file.CanDelete*/file.Name != "...")
+                {
+            <div class="checkbox" style="margin-top: 0px; margin-left:0px; left:153px; top:171px; position: absolute">
+                @Html.CheckBox("selectItem", htmlAttributes: new { data_id = (file.Folder ? -1 : 1) * file.Id })
+            </div>
+        }
+        @*else
+        {
+            <div class="checkbox" style="margin-top: 0px; margin-left: 0px; left:150px; top:171px; position: absolute">
+                @Html.CheckBox("selectItem", htmlAttributes: new { disabled = "disabled" })
+            </div>
+        }*@
+
+
+        @if (file.Folder)
+                {
+            <a href="javascript:void(0)" data-id_folder="@file.Id" class="folderLink">
+                <div class="thumbContainer">
+                    <img src="/Content/Img/folder-subfolder-icon.png" alt="@file.Name" />
+                </div>
+                @if (file.Name == "...")
+                {
+                    <h1 style="margin-top:-10px"><strong>&nbsp;...</strong></h1>
+                }
+                else
+                {
+                    <div style="height:30px; overflow:hidden">
+                        <h6>
+                            <strong>@Html.Raw(file.Name)</strong>
+                        </h6>
+                    </div>
+                            <div>
+                                <h6>
+                                    <small>
+                                        @file.UploadDate.ToString("d")
+                                    </small>
+                                </h6>
+                            </div>
+                }
+            </a>
+        }
+        else
+        {
+            <a href="javascript:void(0)" class="fileItem" data-url="@file.URL">
+                <div class="thumbContainer">
+                    <img src="@file.Thumbnail" />
+                </div>
+                <div style="height:30px; overflow:hidden">
+                    <h6>
+                        <strong>@Html.Raw(file.Name)</strong>
+                    </h6>
+                </div>
+                <div>
+                    <h6>
+                        <small>
+                            @file.UploadDate.ToString("d") &nbsp;&nbsp;
+                            @if (file.Image)
+                            {
+                                @String.Format("{0:n0} x {1:n0}", file.Width, file.Height)
+                                 
+                            }
+                            else
+                            {
+                                @((file.Size / 1024).ToString("n0")) @:KB
+                            }
+                        </small>
+                    </h6>
+                </div>
+            </a>
+        }
+    </div>
+}
+@if (ViewData["path"] != null)
+{
+    @:</div>
+}

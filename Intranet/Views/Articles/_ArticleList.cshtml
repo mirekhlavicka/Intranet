@@ -1,0 +1,46 @@
+﻿@using Intranet.Utils
+@model IEnumerable<Intranet.Models.ArticleViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" name="@("art" + item.IdArticle)" href="@("#collapse" + item.IdArticle)" id="@("artLink" + item.IdArticle)">
+                    @if (item.Important)
+                    {
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    }
+
+                    <span class="article-title">@Html.Raw(item.Title)</span>
+                    <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
+                </a>
+                
+            </h4>
+            
+            <div>
+                <div style="display:inline-block; width:auto">
+                    <small>@Html.Raw(item.Description)</small><br />
+                    <span class="label label-success">@item.Date.ToString("d")</span>
+                    <span class="label label-info">@item.Author</span>
+                </div>
+
+            @if (ViewBag.CanEditAll || (ViewBag.CanEdit && ViewBag.IdUser == item.IdUser))
+            {
+                <div class="pull-right editbuttons" style="display:none; width:auto; padding-right:20px">
+                    @Html.NoEncodeActionLink("<span class='glyphicon glyphicon-pencil'></span>", "Upravit", "Edit", "Articles", routeValues: new { id = item.IdArticle, id_section = ViewBag.IdSection }, htmlAttributes: new { @class = "btn btn-default btn-xs" })
+                    &nbsp;
+                    <a class="delete-article btn btn-danger btn-xs" data-id="@item.IdArticle" href="javascript:void(0)" title="Smazat"><span class="glyphicon glyphicon-trash"></span></a>
+                    &nbsp;&nbsp;
+                </div>
+            }
+            </div>
+
+        </div>
+        <div id="@("collapse" + item.IdArticle)" class="panel-collapse collapse">
+            <div class="panel-body">
+                @Html.Raw(item.Body)
+            </div>
+        </div>
+    </div>
+}

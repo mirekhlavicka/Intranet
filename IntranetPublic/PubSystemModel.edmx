@@ -1,0 +1,734 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PubSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="id_file" />
+          </Key>
+          <Property Name="id_file" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_folder" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="filename" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="filesize" Type="int" Nullable="false" />
+          <Property Name="fileext" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="image" Type="bit" Nullable="false" />
+          <Property Name="width" Type="int" Nullable="false" />
+          <Property Name="height" Type="int" Nullable="false" />
+          <Property Name="upload_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormItemFields">
+          <Key>
+            <PropertyRef Name="id_field" />
+          </Key>
+          <Property Name="id_field" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_item" Type="int" Nullable="false" />
+          <Property Name="id_form" Type="int" Nullable="false" />
+          <Property Name="id_fcontrol" Type="int" Nullable="false" />
+          <Property Name="datetype" Type="tinyint" Nullable="false" />
+          <Property Name="strvalue" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="intvalue" Type="int" Nullable="false" />
+          <Property Name="numvalue" Type="numeric" Precision="19" Scale="6" Nullable="false" />
+          <Property Name="moneyvalue" Type="money" Nullable="false" />
+          <Property Name="datevalue" Type="datetime" Nullable="false" />
+          <Property Name="richvalue" Type="ntext" />
+        </EntityType>
+        <EntityType Name="FormItems">
+          <Key>
+            <PropertyRef Name="id_item" />
+          </Key>
+          <Property Name="id_item" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="id_form" Type="int" Nullable="false" />
+          <Property Name="createdate" Type="datetime" Nullable="false" />
+          <Property Name="editdate" Type="datetime" Nullable="false" />
+          <Property Name="version" Type="int" Nullable="false" />
+          <Property Name="saved" Type="bit" Nullable="false" />
+          <Property Name="id_group" Type="int" Nullable="false" />
+          <Property Name="released" Type="bit" Nullable="false" />
+          <Property Name="id_item_version" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPages">
+          <Key>
+            <PropertyRef Name="id_userpage" />
+          </Key>
+          <Property Name="id_userpage" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="url" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="body" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="order" Type="int" Nullable="false" />
+          <Property Name="show" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="full_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="company" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="street" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="zip" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="country" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ico" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="dic" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="fax" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="mobil" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="url" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dealergroup" Type="tinyint" Nullable="false" />
+          <Property Name="discount" Type="numeric" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="logcount" Type="tinyint" Nullable="false" />
+          <Property Name="controlq" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="controla" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="custom1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="custom2" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="options" Type="int" Nullable="false" />
+          <Property Name="author" Type="bit" Nullable="false" />
+          <Property Name="enabled" Type="bit" Nullable="false" />
+          <Property Name="locked" Type="bit" Nullable="false" />
+          <Property Name="del" Type="bit" Nullable="false" />
+          <Property Name="password_chng_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WWWMAT.dbo.vwCourses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwCourses">
+          <Key>
+            <PropertyRef Name="id_item" />
+          </Key>
+          <Property Name="id_item" Type="int" Nullable="false" />
+          <Property Name="semester" Type="nvarchar" MaxLength="700" />
+          <Property Name="code" Type="nvarchar" MaxLength="700" />
+          <Property Name="name" Type="nvarchar" MaxLength="700" />
+          <Property Name="name_eng" Type="nvarchar" MaxLength="700" />
+          <Property Name="name_code" Type="nvarchar" MaxLength="700" />
+          <Property Name="id_file" Type="int" />
+          <Property Name="engprog" Type="int" />
+          <Property Name="cvis_id" Type="nvarchar" MaxLength="700" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WWWMAT.dbo.vwDepartments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwDepartments">
+          <Key>
+            
+            <PropertyRef Name="KOD" />
+            
+            
+          </Key>
+          <Property Name="id_item" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KOD" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="NAZEV_1029" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="NAZEV_1033" Type="nvarchar" MaxLength="700" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WWWMAT.dbo.vwDownloads' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwDownloads">
+          <Key>
+            <PropertyRef Name="id_item" />
+            <PropertyRef Name="id_file" />
+          </Key>
+          <Property Name="id_item" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" />
+          <Property Name="title" Type="nvarchar" MaxLength="700" />
+          <Property Name="description" Type="nvarchar" MaxLength="700" />
+          <Property Name="id_file" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="course_code" Type="nvarchar" MaxLength="700" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwStaff">
+          <Key>
+            <PropertyRef Name="id_item" />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="id_item" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ODBOR" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="JMENO" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="KRESTNI" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="PRIJMENI" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="TELEFON" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="MISTNOST" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="WWW" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="FUNKCE1" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="FUNKCE2" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="FUNKCE1_ENG" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="FUNKCE2_ENG" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="FOTO" Type="int" Nullable="false" />
+          <Property Name="SHOW_HEADER" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="SHOW_FOTO" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="STYL" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="INFO" Type="ntext" />
+          <Property Name="EMAIL1" Type="nvarchar" MaxLength="700" Nullable="false" />
+          <Property Name="ID_OSOBY" Type="nvarchar" MaxLength="700" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Files_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Files" Type="Self.Files" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Files">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FormItemFields_FormItems">
+          <End Role="FormItems" Type="Self.FormItems" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FormItemFields" Type="Self.FormItemFields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormItems">
+              <PropertyRef Name="id_item" />
+            </Principal>
+            <Dependent Role="FormItemFields">
+              <PropertyRef Name="id_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PubSystemModelStoreContainer">
+          <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormItemFields" EntityType="Self.FormItemFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormItems" EntityType="Self.FormItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPages" EntityType="Self.UserPages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vwCourses" EntityType="Self.vwCourses" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwCourses].[id_item] AS [id_item], 
+    [vwCourses].[semester] AS [semester], 
+    [vwCourses].[code] AS [code], 
+    [vwCourses].[name] AS [name], 
+    [vwCourses].[name_eng] AS [name_eng], 
+    [vwCourses].[name_code] AS [name_code], 
+    [vwCourses].[id_file] AS [id_file], 
+    [vwCourses].[engprog] AS [engprog], 
+    [vwCourses].[cvis_id] AS [cvis_id]
+    FROM [dbo].[vwCourses] AS [vwCourses]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwDepartments" EntityType="Self.vwDepartments" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwDepartments].[id_item] AS [id_item], 
+    [vwDepartments].[KOD] AS [KOD], 
+    [vwDepartments].[NAZEV_1029] AS [NAZEV_1029], 
+    [vwDepartments].[NAZEV_1033] AS [NAZEV_1033]
+    FROM [dbo].[vwDepartments] AS [vwDepartments]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwDownloads" EntityType="Self.vwDownloads" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwDownloads].[id_item] AS [id_item], 
+    [vwDownloads].[id_user] AS [id_user], 
+    [vwDownloads].[title] AS [title], 
+    [vwDownloads].[description] AS [description], 
+    [vwDownloads].[id_file] AS [id_file], 
+    [vwDownloads].[date] AS [date], 
+    [vwDownloads].[course_code] AS [course_code]
+    FROM [dbo].[vwDownloads] AS [vwDownloads]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwStaff" EntityType="Self.vwStaff" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwStaff].[id_item] AS [id_item], 
+    [vwStaff].[ODBOR] AS [ODBOR], 
+    [vwStaff].[JMENO] AS [JMENO], 
+    [vwStaff].[KRESTNI] AS [KRESTNI], 
+    [vwStaff].[PRIJMENI] AS [PRIJMENI], 
+    [vwStaff].[EMAIL] AS [EMAIL], 
+    [vwStaff].[TELEFON] AS [TELEFON], 
+    [vwStaff].[MISTNOST] AS [MISTNOST], 
+    [vwStaff].[WWW] AS [WWW], 
+    [vwStaff].[FUNKCE1] AS [FUNKCE1], 
+    [vwStaff].[FUNKCE2] AS [FUNKCE2], 
+    [vwStaff].[FUNKCE1_ENG] AS [FUNKCE1_ENG], 
+    [vwStaff].[FUNKCE2_ENG] AS [FUNKCE2_ENG], 
+    [vwStaff].[FOTO] AS [FOTO], 
+    [vwStaff].[SHOW_HEADER] AS [SHOW_HEADER], 
+    [vwStaff].[SHOW_FOTO] AS [SHOW_FOTO], 
+    [vwStaff].[STYL] AS [STYL], 
+    [vwStaff].[INFO] AS [INFO], 
+    [vwStaff].[EMAIL1] AS [EMAIL1], 
+    [vwStaff].[ID_OSOBY] AS [ID_OSOBY]
+    FROM [dbo].[vwStaff] AS [vwStaff]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Files_Users" Association="Self.FK_Files_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Files" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FormItemFields_FormItems" Association="Self.FK_FormItemFields_FormItems">
+            <End Role="FormItems" EntitySet="FormItems" />
+            <End Role="FormItemFields" EntitySet="FormItemFields" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PubSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FormItemField">
+          <Key>
+            <PropertyRef Name="id_field" />
+          </Key>
+          <Property Name="id_field" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_item" Type="Int32" Nullable="false" />
+          <Property Name="id_form" Type="Int32" Nullable="false" />
+          <Property Name="id_fcontrol" Type="Int32" Nullable="false" />
+          <Property Name="datetype" Type="Byte" Nullable="false" />
+          <Property Name="strvalue" Type="String" MaxLength="700" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="intvalue" Type="Int32" Nullable="false" />
+          <Property Name="numvalue" Type="Decimal" Precision="19" Scale="6" Nullable="false" />
+          <Property Name="moneyvalue" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="datevalue" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="richvalue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FormItem" Relationship="PubSystemModel.FK_FormItemFields_FormItems" FromRole="FormItemField" ToRole="FormItem" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="full_name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="country" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ico" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dic" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fax" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mobil" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="url" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dealergroup" Type="Byte" Nullable="false" />
+          <Property Name="discount" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="logcount" Type="Byte" Nullable="false" />
+          <Property Name="controlq" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="controla" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="custom1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="custom2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="options" Type="Int32" Nullable="false" />
+          <Property Name="author" Type="Boolean" Nullable="false" />
+          <Property Name="enabled" Type="Boolean" Nullable="false" />
+          <Property Name="locked" Type="Boolean" Nullable="false" />
+          <Property Name="del" Type="Boolean" Nullable="false" />
+          <Property Name="password_chng_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Files" Relationship="PubSystemModel.FK_Files_Users" FromRole="User" ToRole="File" />
+        </EntityType>
+        <EntityContainer Name="PubSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FormItemFields" EntityType="Self.FormItemField" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserPages" EntityType="PubSystemModel.UserPage" />
+          <EntitySet Name="Departments" EntityType="PubSystemModel.Department" />
+          <EntitySet Name="Staff" EntityType="PubSystemModel.StaffItem" />
+          <AssociationSet Name="DepartmentStaffItem" Association="PubSystemModel.DepartmentStaffItem">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="StaffItem" EntitySet="Staff" />
+          </AssociationSet>
+          <EntitySet Name="FormItems" EntityType="PubSystemModel.FormItem" />
+          <AssociationSet Name="FK_FormItemFields_FormItems" Association="PubSystemModel.FK_FormItemFields_FormItems">
+            <End Role="FormItem" EntitySet="FormItems" />
+            <End Role="FormItemField" EntitySet="FormItemFields" />
+          </AssociationSet>
+          <EntitySet Name="Files" EntityType="PubSystemModel.File" />
+          <EntitySet Name="Courses" EntityType="PubSystemModel.Cours" />
+          <EntitySet Name="Downloads" EntityType="PubSystemModel.Download" />
+          <AssociationSet Name="FK_Files_Users" Association="PubSystemModel.FK_Files_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FileDownload" Association="PubSystemModel.FileDownload">
+            <End Role="File" EntitySet="Files" />
+            <End Role="Download" EntitySet="Downloads" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserPage">
+          <Key>
+            <PropertyRef Name="id_userpage" />
+          </Key>
+          <Property Name="id_userpage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="url" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="order" Type="Int32" Nullable="false" />
+          <Property Name="show" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="KOD" />
+          </Key>
+          <Property Name="id_item" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KOD" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="NAZEV_1029" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="NAZEV_1033" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StaffItems" Relationship="PubSystemModel.DepartmentStaffItem" FromRole="Department" ToRole="StaffItem" />
+        </EntityType>
+        <EntityType Name="StaffItem">
+          <Key>
+            <PropertyRef Name="id_item" />
+          </Key>
+          <Property Name="id_item" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ODBOR" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="JMENO" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="KRESTNI" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="PRIJMENI" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="TELEFON" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="MISTNOST" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="WWW" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="FUNKCE1" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="FUNKCE2" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="FUNKCE1_ENG" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="FUNKCE2_ENG" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="FOTO" Type="Int32" Nullable="false" />
+          <Property Name="SHOW_HEADER" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="SHOW_FOTO" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="STYL" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="INFO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL1" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="ID_OSOBY" Type="String" Nullable="false" MaxLength="700" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Department" Relationship="PubSystemModel.DepartmentStaffItem" FromRole="StaffItem" ToRole="Department" />
+        </EntityType>
+        <Association Name="DepartmentStaffItem">
+          <End Type="PubSystemModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="PubSystemModel.StaffItem" Role="StaffItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="KOD" />
+            </Principal>
+            <Dependent Role="StaffItem">
+              <PropertyRef Name="ODBOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FormItem">
+          <Key>
+            <PropertyRef Name="id_item" />
+          </Key>
+          <Property Name="id_item" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="id_form" Type="Int32" Nullable="false" />
+          <Property Name="createdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="editdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="version" Type="Int32" Nullable="false" />
+          <Property Name="saved" Type="Boolean" Nullable="false" />
+          <Property Name="id_group" Type="Int32" Nullable="false" />
+          <Property Name="released" Type="Boolean" Nullable="false" />
+          <Property Name="id_item_version" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FormItemFields" Relationship="PubSystemModel.FK_FormItemFields_FormItems" FromRole="FormItem" ToRole="FormItemField" />
+        </EntityType>
+        <Association Name="FK_FormItemFields_FormItems">
+          <End Type="PubSystemModel.FormItem" Role="FormItem" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PubSystemModel.FormItemField" Role="FormItemField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FormItem">
+              <PropertyRef Name="id_item" />
+            </Principal>
+            <Dependent Role="FormItemField">
+              <PropertyRef Name="id_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="id_file" />
+          </Key>
+          <Property Name="id_file" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_folder" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="filename" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="filesize" Type="Int32" Nullable="false" />
+          <Property Name="fileext" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="Boolean" Nullable="false" />
+          <Property Name="width" Type="Int32" Nullable="false" />
+          <Property Name="height" Type="Int32" Nullable="false" />
+          <Property Name="upload_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="PubSystemModel.FK_Files_Users" FromRole="File" ToRole="User" />
+          <NavigationProperty Name="Downloads" Relationship="PubSystemModel.FileDownload" FromRole="File" ToRole="Download" />
+        </EntityType>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="id_item" />
+          </Key>
+          <Property Name="id_item" Type="Int32" Nullable="false" />
+          <Property Name="semester" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="name_eng" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="name_code" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="id_file" Type="Int32" />
+          <Property Name="engprog" Type="Int32" />
+          <Property Name="cvis_id" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Download">
+          <Key>
+            <PropertyRef Name="id_item" />
+            <PropertyRef Name="id_file" />
+          </Key>
+          <Property Name="id_item" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="id_file" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="course_code" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="File" Relationship="PubSystemModel.FileDownload" FromRole="Download" ToRole="File" />
+        </EntityType>
+        <Association Name="FK_Files_Users">
+          <End Type="PubSystemModel.User" Role="User" Multiplicity="1" />
+          <End Type="PubSystemModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FileDownload">
+          <End Type="PubSystemModel.File" Role="File" Multiplicity="1" />
+          <End Type="PubSystemModel.Download" Role="Download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="id_file" />
+            </Principal>
+            <Dependent Role="Download">
+              <PropertyRef Name="id_file" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PubSystemModelStoreContainer" CdmEntityContainer="PubSystemEntities">
+          <EntitySetMapping Name="FormItemFields">
+            <EntityTypeMapping TypeName="PubSystemModel.FormItemField">
+              <MappingFragment StoreEntitySet="FormItemFields">
+                <ScalarProperty Name="id_field" ColumnName="id_field" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+                <ScalarProperty Name="id_form" ColumnName="id_form" />
+                <ScalarProperty Name="id_fcontrol" ColumnName="id_fcontrol" />
+                <ScalarProperty Name="datetype" ColumnName="datetype" />
+                <ScalarProperty Name="strvalue" ColumnName="strvalue" />
+                <ScalarProperty Name="intvalue" ColumnName="intvalue" />
+                <ScalarProperty Name="numvalue" ColumnName="numvalue" />
+                <ScalarProperty Name="moneyvalue" ColumnName="moneyvalue" />
+                <ScalarProperty Name="datevalue" ColumnName="datevalue" />
+                <ScalarProperty Name="richvalue" ColumnName="richvalue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PubSystemModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="login_name" ColumnName="login_name" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="company" ColumnName="company" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="street" ColumnName="street" />
+                <ScalarProperty Name="zip" ColumnName="zip" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="ico" ColumnName="ico" />
+                <ScalarProperty Name="dic" ColumnName="dic" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="fax" ColumnName="fax" />
+                <ScalarProperty Name="mobil" ColumnName="mobil" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="dealergroup" ColumnName="dealergroup" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="logcount" ColumnName="logcount" />
+                <ScalarProperty Name="controlq" ColumnName="controlq" />
+                <ScalarProperty Name="controla" ColumnName="controla" />
+                <ScalarProperty Name="custom1" ColumnName="custom1" />
+                <ScalarProperty Name="custom2" ColumnName="custom2" />
+                <ScalarProperty Name="options" ColumnName="options" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="enabled" ColumnName="enabled" />
+                <ScalarProperty Name="locked" ColumnName="locked" />
+                <ScalarProperty Name="del" ColumnName="del" />
+                <ScalarProperty Name="password_chng_date" ColumnName="password_chng_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPages">
+            <EntityTypeMapping TypeName="PubSystemModel.UserPage">
+              <MappingFragment StoreEntitySet="UserPages">
+                <ScalarProperty Name="show" ColumnName="show" />
+                <ScalarProperty Name="order" ColumnName="order" />
+                <ScalarProperty Name="body" ColumnName="body" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_userpage" ColumnName="id_userpage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="PubSystemModel.Department">
+              <MappingFragment StoreEntitySet="vwDepartments">
+                <ScalarProperty Name="NAZEV_1033" ColumnName="NAZEV_1033" />
+                <ScalarProperty Name="NAZEV_1029" ColumnName="NAZEV_1029" />
+                <ScalarProperty Name="KOD" ColumnName="KOD" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staff">
+            <EntityTypeMapping TypeName="PubSystemModel.StaffItem">
+              <MappingFragment StoreEntitySet="vwStaff">
+                <ScalarProperty Name="ID_OSOBY" ColumnName="ID_OSOBY" />
+                <ScalarProperty Name="EMAIL1" ColumnName="EMAIL1" />
+                <ScalarProperty Name="INFO" ColumnName="INFO" />
+                <ScalarProperty Name="STYL" ColumnName="STYL" />
+                <ScalarProperty Name="SHOW_FOTO" ColumnName="SHOW_FOTO" />
+                <ScalarProperty Name="SHOW_HEADER" ColumnName="SHOW_HEADER" />
+                <ScalarProperty Name="FOTO" ColumnName="FOTO" />
+                <ScalarProperty Name="FUNKCE2_ENG" ColumnName="FUNKCE2_ENG" />
+                <ScalarProperty Name="FUNKCE1_ENG" ColumnName="FUNKCE1_ENG" />
+                <ScalarProperty Name="FUNKCE2" ColumnName="FUNKCE2" />
+                <ScalarProperty Name="FUNKCE1" ColumnName="FUNKCE1" />
+                <ScalarProperty Name="WWW" ColumnName="WWW" />
+                <ScalarProperty Name="MISTNOST" ColumnName="MISTNOST" />
+                <ScalarProperty Name="TELEFON" ColumnName="TELEFON" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="PRIJMENI" ColumnName="PRIJMENI" />
+                <ScalarProperty Name="KRESTNI" ColumnName="KRESTNI" />
+                <ScalarProperty Name="JMENO" ColumnName="JMENO" />
+                <ScalarProperty Name="ODBOR" ColumnName="ODBOR" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormItems">
+            <EntityTypeMapping TypeName="PubSystemModel.FormItem">
+              <MappingFragment StoreEntitySet="FormItems">
+                <ScalarProperty Name="id_item_version" ColumnName="id_item_version" />
+                <ScalarProperty Name="released" ColumnName="released" />
+                <ScalarProperty Name="id_group" ColumnName="id_group" />
+                <ScalarProperty Name="saved" ColumnName="saved" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="editdate" ColumnName="editdate" />
+                <ScalarProperty Name="createdate" ColumnName="createdate" />
+                <ScalarProperty Name="id_form" ColumnName="id_form" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="PubSystemModel.File">
+              <MappingFragment StoreEntitySet="Files">
+                <ScalarProperty Name="upload_date" ColumnName="upload_date" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="width" ColumnName="width" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="fileext" ColumnName="fileext" />
+                <ScalarProperty Name="filesize" ColumnName="filesize" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_folder" ColumnName="id_folder" />
+                <ScalarProperty Name="id_file" ColumnName="id_file" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="PubSystemModel.Cours">
+              <MappingFragment StoreEntitySet="vwCourses">
+                <ScalarProperty Name="cvis_id" ColumnName="cvis_id" />
+                <ScalarProperty Name="engprog" ColumnName="engprog" />
+                <ScalarProperty Name="id_file" ColumnName="id_file" />
+                <ScalarProperty Name="name_code" ColumnName="name_code" />
+                <ScalarProperty Name="name_eng" ColumnName="name_eng" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="semester" ColumnName="semester" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Downloads">
+            <EntityTypeMapping TypeName="PubSystemModel.Download">
+              <MappingFragment StoreEntitySet="vwDownloads">
+                <ScalarProperty Name="course_code" ColumnName="course_code" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id_file" ColumnName="id_file" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

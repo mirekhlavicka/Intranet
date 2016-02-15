@@ -1,0 +1,176 @@
+﻿@using Intranet.Utils
+@model IEnumerable<Intranet.Models.ArticleViewModel>
+
+@{
+    ViewBag.Title = ViewBag.SectionName;
+}
+
+@functions 
+{
+    string SectionIcon()
+    {
+        switch ((int)ViewBag.IdSection)
+        {
+            case 36:
+                return "glyphicon-volume-up";
+            case 44:
+                return "glyphicon-book";
+            case 45:
+                return "glyphicon-piggy-bank";
+            default:
+                return "glyphicon-info-sign";
+        }
+    }
+}
+
+<style>
+    /*h2, h4.panel-title {
+        font-weight: 600 !important;
+    }*/
+
+    h4.panel-title a{
+        color: #008cba;
+    }
+
+    h4.panel-title a:focus{
+        outline: none !important;
+    }
+
+
+    h4.panel-title i{
+        color: #000000;
+    }
+
+    .panel-body img {
+        max-width: 1100px;
+    }
+
+    .panel-default > .panel-heading {
+        background-color: #fafafa;
+    }
+
+    .panel-group {
+        margin-bottom: 5px !important
+    }
+</style>
+
+
+<div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px;padding-bottom: 0px; padding-top:0px">
+    <div class="panel-body" style="padding:5px">
+        <div class="row">
+            <div class="col-md-6"><h2><span class="glyphicon @SectionIcon()"></span> @ViewBag.SectionName</h2></div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hledat:</label>
+                    @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control", style = "max-width:800px" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.CanEdit)
+    {
+<div class="btn-toolbar" role="toolbar" aria-label="..." style="margin-bottom:5px">
+    <div class="btn-group">
+        @Html.NoEncodeActionLink("<i class='glyphicon glyphicon-plus'></i><span>&nbsp;Přidat novou zprávu</span>", "Přidat novou zprávu", "Create", "Articles", routeValues: new { id_section = ViewBag.IdSection }, htmlAttributes: new { data_modal = "", @class = "btn btn-primary" })
+    </div>
+</div>
+}
+
+<div class="panel-group" id="accordion">
+    @{ Html.RenderPartial("_ArticleList", Model); }
+</div>
+
+<button type="button" class="btn btn-primary" id="btnNextArticles">
+    <i class="glyphicon glyphicon-forward"></i>
+    <span>Starší zprávy</span>
+</button>
+
+@section Scripts
+{
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+
+@if (ViewBag.IdArticle != 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            $('@("#artLink" + ViewBag.IdArticle)').click();
+            });
+    </script>
+}
+
+    <script type="text/javascript">
+        var page = 1;
+        var skip_id_article = @ViewBag.skip_id_article;
+
+        var refresh = function () {
+            $.get('@Url.Action("Index")',
+                {
+                    page: page,
+                    search: $('#tbSearch').val(),
+                    skip_id_article: skip_id_article
+                }, function (data) {
+                if (page == 1) {
+                        $('#accordion').html(data);
+                } else {
+                        $('#accordion').append(data);
+                }
+            });
+        }
+
+        $(function () {
+            $('#btnNextArticles').click(function () {
+                page++;
+                refresh();
+            })
+
+            $('#tbSearch').keyup(function () { page = 1; skip_id_article = 0; refresh() });
+
+            $(document ).on('click', '.delete-article', function () {
+                var id_article = $(this).data("id");
+                var title = $(this).closest('.panel-heading').find('.article-title').text();
+
+                bootbox.confirm({
+                    message: 'Opravdu si přejete smazat "' + title + '" ?',
+                    callback: function (result) {
+                        if (result == true) {
+
+                            $.post('@Url.Action("Delete")',
+                                {
+                                    id_article: id_article
+                                }, function (data) {
+                                    page = 1;
+                                    skip_id_article = 0;
+                                    refresh();
+                                });
+                        }
+                    }
+                });
+            });
+
+            bootbox.setDefaults({
+                locale: "cs"
+            });
+
+        });
+
+        function toggleChevron(e) {
+            $(e.target)
+                .prev('.panel-heading')
+                .find("i.indicator")
+                .toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+
+            $(e.target)
+                .prev('.panel-heading')
+                .find(".editbuttons")
+                .fadeToggle();
+        }
+        $('#accordion').on('hidden.bs.collapse', toggleChevron);
+        $('#accordion').on('shown.bs.collapse', toggleChevron);
+
+    </script>
+}

@@ -35,6 +35,7 @@
                     @RenderSection("Navigation", required: false)
                     <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Rozvrhy", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
                     <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
+                    <li class="@Url.MakeActiveClass("Courses")">@Html.ActionLink("Kurzy", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "hpLink4" })</li>
                     @*<li><a href="../navbar/">Default</a></li>
                     <li><a href="../navbar-static-top/">Static top</a></li>
                     <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>

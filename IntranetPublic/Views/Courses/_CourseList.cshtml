@@ -1,0 +1,51 @@
+﻿@model IEnumerable<IntranetPublic.Cours>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr class="info">
+            <th>
+                @Html.DisplayNameFor(model => model.code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            @*<th width="140x">
+                @Html.DisplayNameFor(model => model.date)/@Html.DisplayNameFor(model => model.user_full_name)
+            </th>
+            <th width="140px">
+                @Html.DisplayNameFor(model => model.course_code_name)
+            </th>
+            <th>
+                Soubor
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <th>
+                    @Html.Raw(item.code)
+                </th>
+                <td>
+                    @Html.Raw(item.name)
+                </td>
+                @*<td>
+                    <small>
+                        @item.date.ToString("d")<br />
+                        @Html.DisplayFor(modelItem => item.user_full_name)
+                    </small>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.course_code_name)
+                </td>
+                <td align="center">
+                    <a href="/download.aspx?id_file=@item.id_file">
+                        <img src="@item.ThumbNailPath" style="max-width:32px; max-height:32px" /><br />
+                        <small>@Html.DisplayFor(modelItem => item.File.name)</small>
+                    </a>
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

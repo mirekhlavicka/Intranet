@@ -1,14 +1,18 @@
-﻿@model IEnumerable<IntranetPublic.Cours>
+﻿@model IEnumerable<IntranetPublic.Models.CourseViewModel>
 
 <table class="table table-hover table-bordered">
     <thead>
         <tr class="info">
-            <th>
-                @Html.DisplayNameFor(model => model.code)
+            <th width="100x">
+                Kód
+            </th>
+            <th width="100x">
+                Semestr
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.name)
+                Název
             </th>
+            <th width="150x"></th><th width="150x"></th>
             @*<th width="140x">
                 @Html.DisplayNameFor(model => model.date)/@Html.DisplayNameFor(model => model.user_full_name)
             </th>
@@ -25,10 +29,19 @@
             {
             <tr>
                 <th>
-                    @Html.Raw(item.code)
+                    @Html.Raw(item.CodeSearch)
                 </th>
                 <td>
-                    @Html.Raw(item.name)
+                    @(item.Semester == "z" ? "Zimní" : "Letní")
+                </td>
+                <td>
+                    @Html.Raw(item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: new { filter = item.Code}, htmlAttributes: null)
+                </td>
+                <td>
+                    <a href="@( "https://www.vutbr.cz/studium/ects-katalog/detail-predmetu?apid=" + item.CVISID )">Karta kurzu</a>
                 </td>
                 @*<td>
                     <small>

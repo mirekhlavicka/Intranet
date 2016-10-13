@@ -13,7 +13,7 @@ namespace IntranetPublic.Controllers
         private PubSystemEntities db = new PubSystemEntities();
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult Index(int sort = 0, string filter = "", string search = "")
+        public ActionResult Index(int sort = 0, string filter = "", string search = "", string lang = "cz")
         {
             var courses = db.Courses.AsQueryable();
 
@@ -43,10 +43,19 @@ namespace IntranetPublic.Controllers
                             {
                                 bool res = false;
                                 d.CodeSearch = Regex.Replace(d.CodeSearch, search, m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
-                                d.Name = Regex.Replace(d.Name, search, m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
+                                if (lang == "cz")
+                                {
+                                    d.Name = Regex.Replace(d.Name, search, m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
+                                }
+                                else
+                                {
+                                    d.NameEng = Regex.Replace(d.NameEng, search, m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
+                                }
                                 return res;
                             });
             }
+
+            ViewBag.lang = lang;
 
             if (Request.IsAjaxRequest())
             {

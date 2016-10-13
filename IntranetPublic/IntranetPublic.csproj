@@ -221,6 +221,7 @@
     <Content Include="Content\img\small\File-Adobe-Dreamweaver-HTML-01-icon.png" />
     <Content Include="Content\img\small\folder-zip-icon.png" />
     <Content Include="Content\img\UM_color_RGB_1.png" />
+    <Content Include="Content\img\UM_color_RGB_2.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="getfile.aspx" />

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Ústav matematiky FSI VUT v Brně</title>
+    <title>@ViewBag.Title - @((ViewBag.lang == null || ViewBag.lang == "cz")? "Ústav matematiky FSI VUT v Brně" : "Institute of Mathematics")</title>
     @Styles.Render("~/Content/bootstrap.css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -23,7 +23,7 @@
                 @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
                 @*<a href="~/@ViewBag.LinkToHome" class="navbar-brand"><i class="glyphicon glyphicon-home"></i></a>*@
                 <a href="http://www.math.fme.vutbr.cz" class="navbar-brand" style="padding:2px">
-                    <img src="~/Content/img/UM_color_RGB_1.png" border="0" width="182" height="45">
+                    <img src="~/Content/img/UM_color_RGB_@((ViewBag.lang == null || ViewBag.lang == "cz")? "1" : "2").png" border="0" @*width="182" height="45"*@>
                 </a>
 
             </div>
@@ -33,9 +33,19 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @RenderSection("Navigation", required: false)
-                    <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Rozvrhy", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
-                    <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
-                    <li class="@Url.MakeActiveClass("Courses")">@Html.ActionLink("Kurzy", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "hpLink4" })</li>
+
+                    @if (ViewBag.lang == null || ViewBag.lang == "cz")
+                    {
+                        <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Rozvrhy", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
+                        <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
+                        <li class="@Url.MakeActiveClass("Courses")">@Html.ActionLink("Kurzy", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "hpLink4" })</li>
+                    }
+                    else
+                    {
+                        <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Time Tables", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
+                        <li class="@Url.MakeActiveClass("Courses")">@Html.ActionLink("Courses", "Index", "Courses", routeValues: new { lang = "eng"}, htmlAttributes: new { id = "hpLink4" })</li>
+                    }
+
                     @*<li><a href="../navbar/">Default</a></li>
                     <li><a href="../navbar-static-top/">Static top</a></li>
                     <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>

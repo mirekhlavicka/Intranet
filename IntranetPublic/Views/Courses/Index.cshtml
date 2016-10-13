@@ -1,36 +1,36 @@
 ﻿@model IEnumerable<IntranetPublic.Models.CourseViewModel>
 
 @{
-    ViewBag.Title = "Kurzy";
+    ViewBag.Title = ViewBag.lang == "cz" ? "Kurzy" : "Courses";
 }
 
 <div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px">
     <div class="panel-body" style="padding:5px">
         <div class="row">
             <div class="form-group col-md-3">
-                <label class="control-label" for="ddlSort"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> Řadit podle:</label>
+                <label class="control-label" for="ddlSort"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Řadit podle:" : "Sort by:")</label>
 
                 @Html.DropDownList("ddlSort", new SelectListItem[] {
-                    new SelectListItem { Text = "Názvu", Value = "0", Selected = true},
-                    new SelectListItem { Text = "Kódu", Value = "1"},
-                    new SelectListItem { Text = "Semestru", Value = "2"}
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Názvu" : "Name"), Value = "0", Selected = true},
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Kódu" : "Code"), Value = "1"},
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Semestru" : "Semester"), Value = "2"}
                 },
                 htmlAttributes: new { @class = "form-control" })
             </div>
 
             <div class="form-group col-md-3">
-                <label class="control-label" for="ddlFilter"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Semestr:</label>
+                <label class="control-label" for="ddlFilter"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Semestr:" : "Semester:")</label>
 
                 @Html.DropDownList("ddlFilter", new SelectListItem[] {
-                    new SelectListItem { Text = "Nerozhoduje", Value = "", Selected = true},
-                    new SelectListItem { Text = "Zimní", Value = "z"},
-                    new SelectListItem { Text = "Letní", Value = "l"}
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Nerozhoduje" : "Both"), Value = "", Selected = true},
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Zimní" : "Winter"), Value = "z"},
+                    new SelectListItem { Text = (ViewBag.lang == "cz" ? "Letní" : "Summer"), Value = "l"}
                 },
                 htmlAttributes: new { @class = "form-control" })
             </div>
 
             <div class="form-group col-md-6">
-                <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hledat:</label>
+                <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Hledat:" : "Search:")</label>
                 @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
@@ -67,6 +67,9 @@
 
             $(window).resize(resizeCourseList);
 
+            if ($('#tbSearch').val() != "" || $('#ddlFilter').val() != "" || $('#ddlSort').val() != "0") {
+                refresh();
+            }
         });
 
         resizeCourseList();

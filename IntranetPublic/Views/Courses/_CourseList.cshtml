@@ -4,13 +4,13 @@
     <thead>
         <tr class="info">
             <th width="100x">
-                Kód
+                @(ViewBag.lang == "cz" ? "Kód" : "Code")
             </th>
             <th width="100x">
-                Semestr
+                @(ViewBag.lang == "cz" ? "Semestr" : "Semester")
             </th>
             <th>
-                Název
+                @(ViewBag.lang == "cz" ? "Název" : "Name")                
             </th>
             <th width="150x"></th><th width="150x"></th>
             @*<th width="140x">
@@ -32,16 +32,30 @@
                     @Html.Raw(item.CodeSearch)
                 </th>
                 <td>
-                    @(item.Semester == "z" ? "Zimní" : "Letní")
+                    @if (ViewBag.lang == "cz")
+                    {
+                        @(item.Semester == "z" ? "Zimní" : "Letní")
+                    }
+                    else
+                    {
+                        @(item.Semester == "z" ? "Winter" : "Summer")
+                    }
                 </td>
                 <td>
-                    @Html.Raw(item.Name)
+                    @Html.Raw(ViewBag.lang == "cz" ? item.Name : item.NameEng)
                 </td>
                 <td>
-                    @Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: new { filter = item.Code}, htmlAttributes: null)
+                    @Html.ActionLink((ViewBag.lang == "cz" ? "Soubory ke stažení" : "Downloads"), "Index", "Downloads", routeValues: new { filter = item.Code}, htmlAttributes: null)
                 </td>
                 <td>
+                @if (ViewBag.lang == "cz")
+                {
                     <a href="@( "https://www.vutbr.cz/studium/ects-katalog/detail-predmetu?apid=" + item.CVISID )">Karta kurzu</a>
+                }
+                else
+                {
+                    <a href="@( "https://www.vutbr.cz/en/studies/ects-catalogue/course-detail?apid=" + item.CVISID )">Course detail</a>
+                }
                 </td>
                 @*<td>
                     <small>

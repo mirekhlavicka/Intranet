@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -36,7 +39,19 @@ namespace IntranetPublic.Controllers
             {
                 currentBody = currentPage.body;
             }
-            
+
+            try
+            {
+                WebClient client = new WebClient();
+                client.Encoding = Encoding.UTF8;
+                string reply = client.DownloadString("https://www.vutbr.cz/lide/nm-" + staffInfo.ID_OSOBY);
+                ViewBag.photoUrl = Server.HtmlDecode(Regex.Match(reply, @"src=""(/www_base/fotka.php\?perid=[^""].*?)""").Groups[1].Value);
+            }
+            catch
+            {
+                ViewBag.photoUrl = "";
+            }
+
             return View(new UserHomePageViewModel
             {
                 User = user,

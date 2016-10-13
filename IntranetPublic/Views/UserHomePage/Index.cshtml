@@ -16,7 +16,7 @@
         @if (Model.StaffInfo.SHOW_FOTO == "block")
         {
             <div class="col-md-2">
-                <img src="http://www.vutbr.cz/www_base/fotka.php?perid=@(Model.StaffInfo.ID_OSOBY)" class="img-thumbnail">
+                <img src="https://www.vutbr.cz@(ViewBag.photoUrl)" class="img-thumbnail">
             </div>
         }
 

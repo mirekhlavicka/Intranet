@@ -10,6 +10,8 @@ namespace IntranetPublic.Models
     {
         public String Name { get; set; }
 
+        public String NameEng { get; set; }
+
         public String Code { get; set; }
 
         public String CodeSearch { get; set; }
@@ -26,6 +28,7 @@ namespace IntranetPublic.Models
         public CourseViewModel(Cours cours)
         {
             Name = cours.name;
+            NameEng = cours.name_eng;
             Code = cours.code.ToUpper();
             CodeSearch = Code;
             Semester = cours.semester;

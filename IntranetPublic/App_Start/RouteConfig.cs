@@ -33,8 +33,8 @@ namespace IntranetPublic
 
             routes.MapRoute(
                 name: "Courses",
-                url: "courses",
-                defaults: new { controller = "Courses", action = "Index" }
+                url: "courses/{lang}",
+                defaults: new { controller = "Courses", action = "Index" , lang = UrlParameter.Optional}
             );
 
 

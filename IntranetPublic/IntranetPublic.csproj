@@ -133,6 +133,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\DownloadsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\TimeTableController.cs" />
     <Compile Include="Controllers\UserHomePageController.cs" />
     <Compile Include="Cours.cs">
@@ -289,6 +290,8 @@
     <Content Include="Views\Downloads\_DownloadListUserHomePage.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Courses\_CourseList.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\_StaffList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

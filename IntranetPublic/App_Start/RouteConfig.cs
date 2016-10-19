@@ -37,6 +37,11 @@ namespace IntranetPublic
                 defaults: new { controller = "Courses", action = "Index" , lang = UrlParameter.Optional}
             );
 
+            routes.MapRoute(
+                name: "Staff",
+                url: "staff/{lang}",
+                defaults: new { controller = "Staff", action = "Index", lang = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "UserTimeTable",

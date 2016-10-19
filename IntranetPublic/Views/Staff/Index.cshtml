@@ -1,0 +1,50 @@
+﻿@model IEnumerable<IntranetPublic.StaffItem>
+
+@{
+    ViewBag.Title = "Zaměstnanci";
+}
+
+<div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px">
+    <div class="panel-body" style="padding:5px">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Hledat:" : "Search:")</label>
+                @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="staffList" class="panel panel-default" @*style="height:500px; overflow-y:scroll; padding-top:1px; padding-left:1px; margin-bottom: 0px"*@>
+    @{ Html.RenderPartial("_StaffList", Model); }
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        var refresh = function () {
+            $.post('@Url.Action("Index")',
+                {
+                    search: $('#tbSearch').val()
+                }, function (data) {
+                    $('#staffList').html(data);
+                });
+        }
+
+        //var resizeCourseList = function () { $('#courseList').css('height', window.innerHeight - $('#courseList').offset().top - 115) };
+
+        $(function () {
+
+            $('#tbSearch').keyup(refresh);
+
+            //$(window).resize(resizeCourseList);
+
+            if ($('#tbSearch').val() != "" ) {
+                refresh();
+            }
+        });
+
+        //resizeCourseList();
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<IntranetPublic.StaffItem>
+
+@{
+    string[] topItems =
+        {
+            "Ředitel ústavu",
+            "Sekretářka ředitele",
+            "Tajemník pro provoz",
+            "Tajemník pro výuku",
+            "Tajemník pro oborové studium",
+            "Ekonomická pracovnice",
+            "Knihovnice",
+            "Technický pracovník"
+        };
+}
+
+@foreach (var item in (from fc in topItems join m in Model on fc equals m.FUNKCE1 select m))
+{
+    if (item.FUNKCE2 != "")
+    {
+        <b>@item.FUNKCE2, </b>
+    }
+    <b>@item.FUNKCE1</b>
+
+    <br />
+    @Html.Raw(item.JMENO)
+    <br /><br />
+}
+
+<hr />
+
+@foreach (var d in ViewBag.departments)
+{
+    var list = Model.Where(i => !topItems.Contains(i.FUNKCE1) && i.ODBOR == d.KOD).OrderBy(m => m.FUNKCE1 != "" ? 0 : 1).ThenBy(m => m.PRIJMENI).ToArray();
+
+    if (list.Length == 0)
+    {
+        continue;
+    }
+
+    <h3>
+        @d.NAZEV_1029
+    </h3>
+
+    foreach (var item in list)
+    {
+        if (item.ODBOR != "DK" && item.FUNKCE1 != "")
+        {
+            <b>@item.FUNKCE1</b>
+        }
+
+        @Html.Raw(item.JMENO)
+        <br />
+    }
+}

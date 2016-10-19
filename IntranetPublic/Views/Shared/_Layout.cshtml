@@ -36,9 +36,10 @@
 
                     @if (ViewBag.lang == null || ViewBag.lang == "cz")
                     {
+                        <li class="@Url.MakeActiveClass("Staff")">@Html.ActionLink("Zaměstnanci", "Index", "Staff", routeValues: null, htmlAttributes: new { id = "hpLink1" })</li>
                         <li class="@Url.MakeActiveClass("TimeTable")">@Html.ActionLink("Rozvrhy", "Index", "TimeTable", routeValues: null, htmlAttributes: new { id = "hpLink3" })</li>
-                        <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
                         <li class="@Url.MakeActiveClass("Courses")">@Html.ActionLink("Kurzy", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "hpLink4" })</li>
+                        <li class="@Url.MakeActiveClass("Downloads")">@Html.ActionLink("Soubory ke stažení", "Index", "Downloads", routeValues: null, htmlAttributes: new { id = "hpLink2" })</li>
                     }
                     else
                     {

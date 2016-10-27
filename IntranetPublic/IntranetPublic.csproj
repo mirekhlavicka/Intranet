@@ -292,6 +292,7 @@
     <Content Include="Views\Courses\_CourseList.cshtml" />
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\_StaffList.cshtml" />
+    <Content Include="Views\Staff\_StaffItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

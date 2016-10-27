@@ -12,44 +12,51 @@
             "Knihovnice",
             "Technický pracovník"
         };
+
+    string[] departments =
+        {
+            "D",
+            "N",
+            "G",
+            "S",
+            "O",
+            "DK"
+        };
 }
 
-@foreach (var item in (from fc in topItems join m in Model on fc equals m.FUNKCE1 select m))
+<div class="panel panel-info">
+    <div class="panel-body">
+        @foreach (var item in (from fc in topItems join m in Model on fc equals m.FUNKCE1 select m))
+        {
+            Html.RenderPartial("_StaffItem", item);
+        }
+    </div>
+</div>
+
+
+@foreach (var d in (from d1 in departments join d2 in (IEnumerable<Department>)ViewBag.departments on d1 equals d2.KOD select d2))
 {
-    if (item.FUNKCE2 != "")
-    {
-        <b>@item.FUNKCE2, </b>
-    }
-    <b>@item.FUNKCE1</b>
-
-    <br />
-    @Html.Raw(item.JMENO)
-    <br /><br />
-}
-
-<hr />
-
-@foreach (var d in ViewBag.departments)
-{
-    var list = Model.Where(i => !topItems.Contains(i.FUNKCE1) && i.ODBOR == d.KOD).OrderBy(m => m.FUNKCE1 != "" ? 0 : 1).ThenBy(m => m.PRIJMENI).ToArray();
+    var list = Model
+        .Where(i => !topItems.Contains(i.FUNKCE1) && i.ODBOR == d.KOD)
+        .OrderBy(m => m.FUNKCE1 != "" ? 0 : 1)
+        .ThenBy(m => m.JMENO.ToLower().Contains("prof.") ? 0 : 1)
+        .ThenBy(m => m.JMENO.ToLower().Contains("doc.") ? 0 : 1)
+        .ThenBy(m => m.PRIJMENI).ToArray();
 
     if (list.Length == 0)
     {
         continue;
     }
 
-    <h3>
-        @d.NAZEV_1029
-    </h3>
+    <a name="@("dep" + d.KOD)"></a>
+    <div class="panel panel-info">
+        <div class="panel-heading"><h4>@d.NAZEV_1029</h4></div>
+        <div class="panel-body">
 
-    foreach (var item in list)
-    {
-        if (item.ODBOR != "DK" && item.FUNKCE1 != "")
-        {
-            <b>@item.FUNKCE1</b>
-        }
-
-        @Html.Raw(item.JMENO)
-        <br />
-    }
+            @foreach (var item in list)
+            {
+                Html.RenderPartial("_StaffItem", item);
+            }
+        </div>
+    </div>
 }

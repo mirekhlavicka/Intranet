@@ -7,15 +7,21 @@
 <div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px">
     <div class="panel-body" style="padding:5px">
         <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-4">
                 <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Hledat:" : "Search:")</label>
                 @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-md-8">
+                <a href="#depD" class="btn btn-info btn-sm">Algebra a diskrétní matematika</a>
+                <a href="#depN" class="btn btn-info btn-sm">Matematická analýza</a>
+                <a href="#depG" class="btn btn-info btn-sm">Počítačová grafika a geometrie</a>
+                <a href="#depS" class="btn btn-info btn-sm">Statistika a optimalizace</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="staffList" class="panel panel-default" @*style="height:500px; overflow-y:scroll; padding-top:1px; padding-left:1px; margin-bottom: 0px"*@>
+<div id="staffList">
     @{ Html.RenderPartial("_StaffList", Model); }
 </div>
 
@@ -32,19 +38,20 @@
                 });
         }
 
-        //var resizeCourseList = function () { $('#courseList').css('height', window.innerHeight - $('#courseList').offset().top - 115) };
-
         $(function () {
 
             $('#tbSearch').keyup(refresh);
 
-            //$(window).resize(resizeCourseList);
 
             if ($('#tbSearch').val() != "" ) {
                 refresh();
             }
+
+            //$(document).on('click','.linkStaffItem', function () {
+            //    $('.staffItem[data-iditem="' + $(this).data('iditem') + '"]').slideToggle(200);
+            //});
+
         });
 
-        //resizeCourseList();
     </script>
 }

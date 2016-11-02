@@ -24,14 +24,21 @@
         };
 }
 
+@{
+    var toplist = (from fc in topItems join m in Model on fc equals m.FUNKCE1 select m).ToArray();
+
+    if (toplist.Length > 0) {
 <div class="panel panel-info">
     <div class="panel-body">
-        @foreach (var item in (from fc in topItems join m in Model on fc equals m.FUNKCE1 select m))
-        {
-            Html.RenderPartial("_StaffItem", item);
-        }
+
+           @foreach (var item in toplist)
+           {
+               Html.RenderPartial("_StaffItem", item);
+           }
     </div>
 </div>
+        }
+    }
 
 
 @foreach (var d in (from d1 in departments join d2 in (IEnumerable<Department>)ViewBag.departments on d1 equals d2.KOD select d2))

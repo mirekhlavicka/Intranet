@@ -62,7 +62,18 @@
                 });
         }
 
-        var resizeDownloadList = function () { $('#downloadList').css('height', window.innerHeight - $('#downloadList').offset().top - 115) };
+        //var resizeDownloadList = function () { $('#downloadList').css('height', window.innerHeight - $('#downloadList').offset().top - 85) };
+
+        var resizeDownloadList = function () {
+            var h = window.innerHeight - $('#downloadList').offset().top - 85;
+            if (h > 400) {
+                $('#downloadList').css('height', h);
+                $('#downloadList').css('overflow-y', 'scroll');
+            } else {
+                $('#downloadList').css('height', '');
+                $('#downloadList').css('overflow-y', '');
+            }
+        };
 
         $(function () {
 

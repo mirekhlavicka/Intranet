@@ -57,7 +57,18 @@
                 });
         }
 
-        var resizeCourseList = function () { $('#courseList').css('height', window.innerHeight - $('#courseList').offset().top - 115) };
+        //var resizeCourseList = function () { $('#courseList').css('height', window.innerHeight - $('#courseList').offset().top - 85) };
+
+        var resizeCourseList = function () {
+            var h = window.innerHeight - $('#courseList').offset().top - 85;
+            if (h > 400) {
+                $('#courseList').css('height', h);
+                $('#courseList').css('overflow-y', 'scroll');
+            } else {
+                $('#courseList').css('height', '');
+                $('#courseList').css('overflow-y', '');
+            }
+        };
 
         $(function () {
 

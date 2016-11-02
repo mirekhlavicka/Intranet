@@ -35,6 +35,7 @@ namespace IntranetPublic.Controllers
 
             ViewBag.lang = lang;
             ViewBag.departments = db.Departments.ToList();
+            ViewBag.tbSearch = search;
 
             if (Request.IsAjaxRequest())
             {

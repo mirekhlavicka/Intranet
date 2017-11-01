@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using IntranetPublic.Models;
+using IntranetPublic.Utils;
 
 namespace IntranetPublic.Controllers
 {
@@ -39,6 +40,8 @@ namespace IntranetPublic.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
+                search = search.ToAccentInsensitiveRegex();
+
                 courses1 = courses1.Where(d =>
                             {
                                 bool res = false;

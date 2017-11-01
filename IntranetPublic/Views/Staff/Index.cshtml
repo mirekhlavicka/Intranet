@@ -11,11 +11,12 @@
                 <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> @(ViewBag.lang == "cz" ? "Hledat:" : "Search:")</label>
                 @Html.TextBox("tbSearch", null, htmlAttributes: new { @class = "form-control" })
             </div>
-            <div class="col-md-9" style="padding-top: 26px;">
-                <a href="#depD" class="btn btn-info btn-sm">Odbor algebry a diskrétní matematiky</a>
-                <a href="#depN" class="btn btn-info btn-sm">Odbor matematické analýzy</a>
-                <a href="#depG" class="btn btn-info btn-sm">Odbor počítačové grafiky a geometrie </a>
-                <a href="#depS" class="btn btn-info btn-sm">Odbor statistiky a optimalizace</a>
+            <div class="col-md-9" style="padding-top: 0x;">
+                <label class="control-label" >@(ViewBag.lang == "cz" ? "Odbor" : "Department of "):</label><br/>
+                <a href="#depD" class="btn btn-info btn-sm">@(ViewBag.lang == "cz" ? "algebry a diskrétní matematiky" : "Algebra and Discrete Math.")</a>
+                <a href="#depN" class="btn btn-info btn-sm">@(ViewBag.lang == "cz" ? "matematické analýzy" : "Mathematical Analysis")</a>
+                <a href="#depG" class="btn btn-info btn-sm">@(ViewBag.lang == "cz" ? "počítačové grafiky a geometrie" : "Computer Graphics and Geometry")</a>
+                <a href="#depS" class="btn btn-info btn-sm">@(ViewBag.lang == "cz" ? "statistiky a optimalizace" : "Statistics and Optimization")</a>
             </div>
         </div>
     </div>
@@ -32,21 +33,22 @@
         var refresh = function () {
             $.post('@Url.Action("Index")',
                 {
-                    search: $('#tbSearch').val()
+                    search: $('#tbSearch').val(),
+                    beta: '@Request.QueryString["beta"]'
                 }, function (data) {
                     $('#staffList').html(data);
                 });
         }
 
         var resizeStaffList = function () {
-            var h = window.innerHeight - $('#staffList').offset().top - 85;
-            if (h > 400) {
+            var h = window.innerHeight - $('#staffList').offset().top - @(Request.QueryString["beta"] == "1" ? 0 : 85);
+            //if (h > 400) {
                 $('#staffList').css('height', h);
                 $('#staffList').css('overflow-y', 'scroll');
-            } else {
+            /*} else {
                 $('#staffList').css('height', '');
                 $('#staffList').css('overflow-y', '');
-            }            
+            }*/
         };
 
 

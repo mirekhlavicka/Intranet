@@ -10,6 +10,7 @@ using Intranet;
 using IntranetPublic.Models;
 using System.Text.RegularExpressions;
 using IntranetPublic;
+using IntranetPublic.Utils;
 
 namespace Intranet.Controllers
 {
@@ -22,6 +23,8 @@ namespace Intranet.Controllers
         {
             var courses = GetCourses();
             var users = GetUsers();
+
+            search = search.ToAccentInsensitiveRegex();
 
             var downloads = db.Downloads
                 .Where(d => id_item_user == 0 || d.id_user == id_item_user)
@@ -83,6 +86,23 @@ namespace Intranet.Controllers
                 return View(downloads.ToList());
             }
         }
+
+        ////http://stackoverflow.com/questions/5826649/returning-a-file-to-view-download-in-asp-net-mvc
+        //[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        //public ActionResult GetFile(int id = 0)
+        //{
+        //    //z PubSys downloadu
+        //    //Response.ContentType = "application/octet-stream"; //!!!
+        //    //Response.AppendHeader("Content-Disposition", "attachment; filename=\"" + Server.UrlEncode(filename).Replace("+", "%20") + "\""); //!!!
+
+        //    var file = db.Files.SingleOrDefault(f => f.id_file == id);
+
+        //    //tohle dela download
+        //    return File(@"d:\pom\F1UserCode.xlsx", System.Net.Mime.MediaTypeNames.Application.Octet/*"application/force-download*/, "Test" + (file != null ? file.name : id.ToString()) + ".xlsx");
+
+        //    //tohle to hned otevre, na obrazky a tak
+        //    //return File(@"d:\pom\betynka_darek_predplatne300x140.png", MimeMapping.GetMimeMapping(@"d:\pom\betynka_darek_predplatne300x140.png"));
+        //}
 
 
         private List<SelectListItem> GetCourses()

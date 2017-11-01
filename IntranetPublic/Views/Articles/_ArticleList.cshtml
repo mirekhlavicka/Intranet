@@ -1,0 +1,12 @@
+﻿@model IEnumerable<IntranetPublic.Article>
+
+@foreach (var item in Model)
+{
+
+    <a href="@Url.Action("Details", new { id = item.id_article })">@Html.Raw(item.title)</a>
+    <br />
+    @item.datereleased.ToString("d")
+    <br />
+    @Html.Raw(item.annotation)
+    <br /><br />
+}

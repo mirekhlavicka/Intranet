@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="00772c000f7b4cf19c5358199d5e98cc" Name="Diagram1">
+      <Diagram DiagramId="00772c000f7b4cf19c5358199d5e98cc" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="PubSystemModel.FormItemField" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PubSystemModel.User" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PubSystemModel.UserPage" Width="1.5" PointX="5.375" PointY="0.75" />
@@ -18,6 +18,15 @@
         <EntityTypeShape EntityType="PubSystemModel.Download" Width="1.5" PointX="7.625" PointY="7.875" />
         <AssociationConnector Association="PubSystemModel.FK_Files_Users" />
         <AssociationConnector Association="PubSystemModel.FileDownload" />
+        <EntityTypeShape EntityType="PubSystemModel.Article" Width="1.5" PointX="13.25" PointY="8.875" />
+        <EntityTypeShape EntityType="PubSystemModel.ArticleSection" Width="1.5" PointX="3" PointY="14.125" />
+        <EntityTypeShape EntityType="PubSystemModel.Chapter" Width="1.5" PointX="3" PointY="16.75" />
+        <AssociationConnector Association="PubSystemModel.FK_Articles_Users" />
+        <AssociationConnector Association="PubSystemModel.FK_ArticleSections_Articles" />
+        <AssociationConnector Association="PubSystemModel.FK_Chapters_Articles" />
+        <AssociationConnector Association="PubSystemModel.Authors" />
+        <EntityTypeShape EntityType="PubSystemModel.Section" Width="1.5" PointX="0.75" PointY="14.25" />
+        <AssociationConnector Association="PubSystemModel.FK_ArticleSections_Sections" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,6 +5,50 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PubSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Articles">
+          <Key>
+            <PropertyRef Name="id_article" />
+          </Key>
+          <Property Name="id_article" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_metaarticle" Type="int" Nullable="false" />
+          <Property Name="id_server" Type="int" Nullable="false" />
+          <Property Name="id_arttype" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="annotation" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="imageurl" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="redirurl" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="created" Type="smalldatetime" Nullable="false" />
+          <Property Name="edited" Type="smalldatetime" Nullable="false" />
+          <Property Name="released" Type="bit" Nullable="false" />
+          <Property Name="datereleased" Type="smalldatetime" Nullable="false" />
+          <Property Name="datestop" Type="smalldatetime" Nullable="false" />
+          <Property Name="chaptercount" Type="smallint" Nullable="false" />
+          <Property Name="keywords" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="forum" Type="bit" Nullable="false" />
+          <Property Name="forumitems" Type="int" Nullable="false" />
+          <Property Name="forumlastitem" Type="smalldatetime" Nullable="false" />
+          <Property Name="complete" Type="bit" Nullable="false" />
+          <Property Name="del" Type="bit" Nullable="false" />
+          <Property Name="tmstamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArticleSections">
+          <Key>
+            <PropertyRef Name="id_article" />
+            <PropertyRef Name="id_section" />
+          </Key>
+          <Property Name="id_article" Type="int" Nullable="false" />
+          <Property Name="id_section" Type="int" Nullable="false" />
+          <Property Name="priority" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Authors">
+          <Key>
+            <PropertyRef Name="id_article" />
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_article" Type="int" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Files">
           <Key>
             <PropertyRef Name="id_file" />
@@ -51,6 +95,36 @@
           <Property Name="id_group" Type="int" Nullable="false" />
           <Property Name="released" Type="bit" Nullable="false" />
           <Property Name="id_item_version" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Chapters">
+          <Key>
+            <PropertyRef Name="id_chapter" />
+          </Key>
+          <Property Name="id_chapter" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_article" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="body" Type="ntext" Nullable="false" />
+          <Property Name="order" Type="int" Nullable="false" />
+          <Property Name="tmstamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="del" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sections">
+          <Key>
+            <PropertyRef Name="id_section" />
+          </Key>
+          <Property Name="id_section" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_metasection" Type="int" Nullable="false" />
+          <Property Name="id_server" Type="int" Nullable="false" />
+          <Property Name="id_section_parent" Type="int" Nullable="false" />
+          <Property Name="id_section_parent_top" Type="int" Nullable="false" />
+          <Property Name="treelevel" Type="tinyint" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="redirurl" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="target" Type="tinyint" Nullable="false" />
+          <Property Name="visible" Type="bit" Nullable="false" />
+          <Property Name="del" Type="bit" Nullable="false" />
+          <Property Name="order" Type="int" Nullable="false" />
+          <Property Name="options" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserPages">
           <Key>
@@ -192,6 +266,72 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
           <Property Name="EMAIL1" Type="nvarchar" MaxLength="700" Nullable="false" />
           <Property Name="ID_OSOBY" Type="nvarchar" MaxLength="700" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Articles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleSections_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArticleSections" Type="Self.ArticleSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="id_article" />
+            </Principal>
+            <Dependent Role="ArticleSections">
+              <PropertyRef Name="id_article" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleSections_Sections">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="ArticleSections" Type="Self.ArticleSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="id_section" />
+            </Principal>
+            <Dependent Role="ArticleSections">
+              <PropertyRef Name="id_section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Authors_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Authors" Type="Self.Authors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="id_article" />
+            </Principal>
+            <Dependent Role="Authors">
+              <PropertyRef Name="id_article" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Authors_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Authors" Type="Self.Authors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Authors">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Files_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Files" Type="Self.Files" Multiplicity="*" />
@@ -218,10 +358,29 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Chapters_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Chapters" Type="Self.Chapters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="id_article" />
+            </Principal>
+            <Dependent Role="Chapters">
+              <PropertyRef Name="id_article" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PubSystemModelStoreContainer">
+          <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleSections" EntityType="Self.ArticleSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormItemFields" EntityType="Self.FormItemFields" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormItems" EntityType="Self.FormItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chapters" EntityType="Self.Chapters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPages" EntityType="Self.UserPages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vwCourses" EntityType="Self.vwCourses" store:Type="Views" store:Schema="dbo">
@@ -280,6 +439,26 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
     [vwStaff].[ID_OSOBY] AS [ID_OSOBY]
     FROM [dbo].[vwStaff] AS [vwStaff]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Articles_Users" Association="Self.FK_Articles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleSections_Articles" Association="Self.FK_ArticleSections_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="ArticleSections" EntitySet="ArticleSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleSections_Sections" Association="Self.FK_ArticleSections_Sections">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ArticleSections" EntitySet="ArticleSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Authors_Articles" Association="Self.FK_Authors_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="Authors" EntitySet="Authors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Authors_Users" Association="Self.FK_Authors_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Authors" EntitySet="Authors" />
+          </AssociationSet>
           <AssociationSet Name="FK_Files_Users" Association="Self.FK_Files_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Files" EntitySet="Files" />
@@ -287,6 +466,10 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
           <AssociationSet Name="FK_FormItemFields_FormItems" Association="Self.FK_FormItemFields_FormItems">
             <End Role="FormItems" EntitySet="FormItems" />
             <End Role="FormItemFields" EntitySet="FormItemFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chapters_Articles" Association="Self.FK_Chapters_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="Chapters" EntitySet="Chapters" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -348,6 +531,8 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
           <Property Name="del" Type="Boolean" Nullable="false" />
           <Property Name="password_chng_date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Files" Relationship="PubSystemModel.FK_Files_Users" FromRole="User" ToRole="File" />
+          <NavigationProperty Name="Articles" Relationship="PubSystemModel.FK_Articles_Users" FromRole="User" ToRole="Article" />
+          <NavigationProperty Name="Articles1" Relationship="PubSystemModel.Authors" FromRole="User" ToRole="Article" />
         </EntityType>
         <EntityContainer Name="PubSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FormItemFields" EntityType="Self.FormItemField" />
@@ -374,6 +559,30 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
           <AssociationSet Name="FileDownload" Association="PubSystemModel.FileDownload">
             <End Role="File" EntitySet="Files" />
             <End Role="Download" EntitySet="Downloads" />
+          </AssociationSet>
+          <EntitySet Name="Articles" EntityType="PubSystemModel.Article" />
+          <EntitySet Name="ArticleSections" EntityType="PubSystemModel.ArticleSection" />
+          <EntitySet Name="Chapters" EntityType="PubSystemModel.Chapter" />
+          <AssociationSet Name="FK_Articles_Users" Association="PubSystemModel.FK_Articles_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleSections_Articles" Association="PubSystemModel.FK_ArticleSections_Articles">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="ArticleSection" EntitySet="ArticleSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chapters_Articles" Association="PubSystemModel.FK_Chapters_Articles">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="Chapter" EntitySet="Chapters" />
+          </AssociationSet>
+          <AssociationSet Name="Authors" Association="PubSystemModel.Authors">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Sections" EntityType="PubSystemModel.Section" />
+          <AssociationSet Name="FK_ArticleSections_Sections" Association="PubSystemModel.FK_ArticleSections_Sections">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="ArticleSection" EntitySet="ArticleSections" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserPage">
@@ -533,6 +742,136 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
             </Principal>
             <Dependent Role="Download">
               <PropertyRef Name="id_file" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="id_article" />
+          </Key>
+          <Property Name="id_article" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_metaarticle" Type="Int32" Nullable="false" />
+          <Property Name="id_server" Type="Int32" Nullable="false" />
+          <Property Name="id_arttype" Type="Int32" Nullable="false" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="annotation" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="imageurl" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="redirurl" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="created" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="edited" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="released" Type="Boolean" Nullable="false" />
+          <Property Name="datereleased" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="datestop" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="chaptercount" Type="Int16" Nullable="false" />
+          <Property Name="keywords" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="forum" Type="Boolean" Nullable="false" />
+          <Property Name="forumitems" Type="Int32" Nullable="false" />
+          <Property Name="forumlastitem" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="complete" Type="Boolean" Nullable="false" />
+          <Property Name="del" Type="Boolean" Nullable="false" />
+          <Property Name="tmstamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="User" Relationship="PubSystemModel.FK_Articles_Users" FromRole="Article" ToRole="User" />
+          <NavigationProperty Name="ArticleSections" Relationship="PubSystemModel.FK_ArticleSections_Articles" FromRole="Article" ToRole="ArticleSection" />
+          <NavigationProperty Name="Chapters" Relationship="PubSystemModel.FK_Chapters_Articles" FromRole="Article" ToRole="Chapter" />
+          <NavigationProperty Name="Users" Relationship="PubSystemModel.Authors" FromRole="Article" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ArticleSection">
+          <Key>
+            <PropertyRef Name="id_article" />
+            <PropertyRef Name="id_section" />
+          </Key>
+          <Property Name="id_article" Type="Int32" Nullable="false" />
+          <Property Name="id_section" Type="Int32" Nullable="false" />
+          <Property Name="priority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="PubSystemModel.FK_ArticleSections_Articles" FromRole="ArticleSection" ToRole="Article" />
+          <NavigationProperty Name="Section" Relationship="PubSystemModel.FK_ArticleSections_Sections" FromRole="ArticleSection" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="Chapter">
+          <Key>
+            <PropertyRef Name="id_chapter" />
+          </Key>
+          <Property Name="id_chapter" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_article" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="order" Type="Int32" Nullable="false" />
+          <Property Name="tmstamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="del" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="PubSystemModel.FK_Chapters_Articles" FromRole="Chapter" ToRole="Article" />
+        </EntityType>
+        <Association Name="FK_Articles_Users">
+          <End Type="PubSystemModel.User" Role="User" Multiplicity="1" />
+          <End Type="PubSystemModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleSections_Articles">
+          <End Type="PubSystemModel.Article" Role="Article" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PubSystemModel.ArticleSection" Role="ArticleSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="id_article" />
+            </Principal>
+            <Dependent Role="ArticleSection">
+              <PropertyRef Name="id_article" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chapters_Articles">
+          <End Type="PubSystemModel.Article" Role="Article" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PubSystemModel.Chapter" Role="Chapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="id_article" />
+            </Principal>
+            <Dependent Role="Chapter">
+              <PropertyRef Name="id_article" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Authors">
+          <End Type="PubSystemModel.Article" Role="Article" Multiplicity="*" />
+          <End Type="PubSystemModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="id_section" />
+          </Key>
+          <Property Name="id_section" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_metasection" Type="Int32" Nullable="false" />
+          <Property Name="id_server" Type="Int32" Nullable="false" />
+          <Property Name="id_section_parent" Type="Int32" Nullable="false" />
+          <Property Name="id_section_parent_top" Type="Int32" Nullable="false" />
+          <Property Name="treelevel" Type="Byte" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="redirurl" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="target" Type="Byte" Nullable="false" />
+          <Property Name="visible" Type="Boolean" Nullable="false" />
+          <Property Name="del" Type="Boolean" Nullable="false" />
+          <Property Name="order" Type="Int32" Nullable="false" />
+          <Property Name="options" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArticleSections" Relationship="PubSystemModel.FK_ArticleSections_Sections" FromRole="Section" ToRole="ArticleSection" />
+        </EntityType>
+        <Association Name="FK_ArticleSections_Sections">
+          <End Type="PubSystemModel.Section" Role="Section" Multiplicity="1" />
+          <End Type="PubSystemModel.ArticleSection" Role="ArticleSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="id_section" />
+            </Principal>
+            <Dependent Role="ArticleSection">
+              <PropertyRef Name="id_section" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -705,6 +1044,83 @@ warning 6002: The table/view 'WWWMAT.dbo.vwStaff' does not have a primary key de
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
                 <ScalarProperty Name="id_item" ColumnName="id_item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="PubSystemModel.Article">
+              <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="tmstamp" ColumnName="tmstamp" />
+                <ScalarProperty Name="del" ColumnName="del" />
+                <ScalarProperty Name="complete" ColumnName="complete" />
+                <ScalarProperty Name="forumlastitem" ColumnName="forumlastitem" />
+                <ScalarProperty Name="forumitems" ColumnName="forumitems" />
+                <ScalarProperty Name="forum" ColumnName="forum" />
+                <ScalarProperty Name="keywords" ColumnName="keywords" />
+                <ScalarProperty Name="chaptercount" ColumnName="chaptercount" />
+                <ScalarProperty Name="datestop" ColumnName="datestop" />
+                <ScalarProperty Name="datereleased" ColumnName="datereleased" />
+                <ScalarProperty Name="released" ColumnName="released" />
+                <ScalarProperty Name="edited" ColumnName="edited" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="redirurl" ColumnName="redirurl" />
+                <ScalarProperty Name="imageurl" ColumnName="imageurl" />
+                <ScalarProperty Name="annotation" ColumnName="annotation" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_arttype" ColumnName="id_arttype" />
+                <ScalarProperty Name="id_server" ColumnName="id_server" />
+                <ScalarProperty Name="id_metaarticle" ColumnName="id_metaarticle" />
+                <ScalarProperty Name="id_article" ColumnName="id_article" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArticleSections">
+            <EntityTypeMapping TypeName="PubSystemModel.ArticleSection">
+              <MappingFragment StoreEntitySet="ArticleSections">
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="id_section" ColumnName="id_section" />
+                <ScalarProperty Name="id_article" ColumnName="id_article" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chapters">
+            <EntityTypeMapping TypeName="PubSystemModel.Chapter">
+              <MappingFragment StoreEntitySet="Chapters">
+                <ScalarProperty Name="del" ColumnName="del" />
+                <ScalarProperty Name="tmstamp" ColumnName="tmstamp" />
+                <ScalarProperty Name="order" ColumnName="order" />
+                <ScalarProperty Name="body" ColumnName="body" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id_article" ColumnName="id_article" />
+                <ScalarProperty Name="id_chapter" ColumnName="id_chapter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Authors" TypeName="PubSystemModel.Authors" StoreEntitySet="Authors">
+            <EndProperty Name="User">
+              <ScalarProperty Name="id_user" ColumnName="id_user" />
+            </EndProperty>
+            <EndProperty Name="Article">
+              <ScalarProperty Name="id_article" ColumnName="id_article" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="PubSystemModel.Section">
+              <MappingFragment StoreEntitySet="Sections">
+                <ScalarProperty Name="options" ColumnName="options" />
+                <ScalarProperty Name="order" ColumnName="order" />
+                <ScalarProperty Name="del" ColumnName="del" />
+                <ScalarProperty Name="visible" ColumnName="visible" />
+                <ScalarProperty Name="target" ColumnName="target" />
+                <ScalarProperty Name="redirurl" ColumnName="redirurl" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="treelevel" ColumnName="treelevel" />
+                <ScalarProperty Name="id_section_parent_top" ColumnName="id_section_parent_top" />
+                <ScalarProperty Name="id_section_parent" ColumnName="id_section_parent" />
+                <ScalarProperty Name="id_server" ColumnName="id_server" />
+                <ScalarProperty Name="id_metasection" ColumnName="id_metasection" />
+                <ScalarProperty Name="id_section" ColumnName="id_section" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

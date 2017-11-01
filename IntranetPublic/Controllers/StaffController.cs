@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using IntranetPublic.Utils;
 
 namespace IntranetPublic.Controllers
 {
@@ -22,13 +23,12 @@ namespace IntranetPublic.Controllers
 
             var staff = db.Staff.AsEnumerable();
 
-
             if (!String.IsNullOrEmpty(search))
             {
                 staff = staff.Where(s =>
                 {
                     bool res = false;
-                    s.JMENO = Regex.Replace(s.JMENO, search, m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
+                    s.JMENO = Regex.Replace(s.JMENO, search.ToAccentInsensitiveRegex(), m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
                     return res;
                 });
             }

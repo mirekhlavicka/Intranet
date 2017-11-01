@@ -44,7 +44,7 @@
     </div>
 }
 
-<div id="dayList">
+<div id="dayList" @Html.Raw(Request.QueryString["beta"] == "1" ? "style=\"overflow-x: auto\"" : "")>
     @{ Html.RenderPartial("_DayList", Model); }
 </div>
 
@@ -77,7 +77,7 @@
         <script type="text/javascript">
             $(
                 $('#ddlUser').change(function () {
-                    var url = '@(Url.Action("Index", new { uid = "[uid]" }))';
+                    var url = '@(Url.Action("Index", new { uid = "[uid]", beta = Request.QueryString["beta"] }))';
                     url = url.replace('[uid]', $(this).val());
                     window.location =url;
                 }));

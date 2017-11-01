@@ -9,13 +9,17 @@ namespace IntranetPublic.Utils
 {
     public static class MyExtensions
     {
-        public static string MakeActiveClass(this UrlHelper urlHelper, string controller)
+        public static string MakeActiveClass(this UrlHelper urlHelper, string controller, int section = -1)
         {
             string result = "active";
 
             string controllerName = urlHelper.RequestContext.RouteData.Values["controller"].ToString();
 
             if (!controllerName.Equals(controller, StringComparison.OrdinalIgnoreCase))
+            {
+                result = null;
+            }
+            else if (section != -1 && (urlHelper.RequestContext.RouteData.Values["section"] ?? 0).ToString() != section.ToString())
             {
                 result = null;
             }
@@ -39,6 +43,24 @@ namespace IntranetPublic.Utils
             builder.MergeAttributes(new RouteValueDictionary(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)));
 
             return MvcHtmlString.Create(builder.ToString());
+        }
+
+        public static string ToAccentInsensitiveRegex(this string s)
+        {
+            return s
+                .Replace("e", "[eéě]")
+                .Replace("s", "[sš]")
+                .Replace("c", "[cč]")
+                .Replace("r", "[rř]")
+                .Replace("z", "[zž]")
+                .Replace("y", "[yý]")
+                .Replace("a", "[aáä]")
+                .Replace("i", "[ií]")
+                .Replace("u", "[uúůü]")
+                .Replace("n", "[nň]")
+                .Replace("o", "[oóö]")
+                .Replace("d", "[dď]")
+                .Replace("t", "[tť]");
         }
     }
 }

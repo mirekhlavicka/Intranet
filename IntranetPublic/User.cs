@@ -18,6 +18,8 @@ namespace IntranetPublic
         public User()
         {
             this.Files = new HashSet<File>();
+            this.Articles = new HashSet<Article>();
+            this.Articles1 = new HashSet<Article>();
         }
     
         public int id_user { get; set; }
@@ -56,5 +58,9 @@ namespace IntranetPublic
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<File> Files { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Article> Articles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Article> Articles1 { get; set; }
     }
 }

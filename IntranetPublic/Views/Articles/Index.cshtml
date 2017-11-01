@@ -1,0 +1,66 @@
+﻿@model IEnumerable<IntranetPublic.Article>
+
+
+@{
+    ViewBag.Title = ViewBag.SectionName;
+}
+
+<div class="panel panel-default well well-sm" style="margin-top:5px;margin-bottom:5px;padding-bottom: 0px; padding-top:0px">
+    <div class="panel-body" style="padding:5px">
+        <div class="row">
+            <div class="col-md-6"><h2>@*<span class="glyphicon @SectionIcon()"></span>*@ @ViewBag.SectionName</h2></div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="tbSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hledat:</label>
+                    @Html.TextBox("tbSearch", "", htmlAttributes: new { @class = "form-control", style = "max-width:800px" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="articles">
+    @{ Html.RenderPartial("_ArticleList", Model); }
+</div>
+
+<button type="button" class="btn btn-primary" id="btnNextArticles">
+    <i class="glyphicon glyphicon-forward"></i>
+    <span>Starší zprávy</span>
+</button>
+
+@section Scripts
+{
+<script type="text/javascript">
+        var page = 1;
+
+        var refresh = function () {
+            $.get('@Url.Action("Index", new { section = ViewBag.section, lang = ViewBag.lang/*ViewContext.RouteData.Values HttpContext.Current.Request.RequestContext.RouteData.Values["section"]*/ })',
+                {
+                    page: page,
+                    search: $('#tbSearch').val()
+                }, function (data) {
+                if (page == 1) {
+                    $('#articles').html(data);
+                } else {
+                    $('#articles').append(data);
+                }
+            });
+        }
+
+        $(function () {
+            $('#btnNextArticles').click(function () {
+                page++;
+                refresh();
+            })
+
+            $('#tbSearch').keyup(function () { page = 1; skip_id_article = 0; refresh() });
+
+            if ($('#tbSearch').val() != "") {
+                refresh();
+            }
+        });
+</script>
+
+}

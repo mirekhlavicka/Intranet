@@ -45,7 +45,7 @@
                     @Html.Raw(ViewBag.lang == "cz" ? item.Name : item.NameEng)
                 </td>
                 <td>
-                    @Html.ActionLink((ViewBag.lang == "cz" ? "Soubory ke stažení" : "Downloads"), "Index", "Downloads", routeValues: new { filter = item.Code}, htmlAttributes: null)
+                    @Html.ActionLink((ViewBag.lang == "cz" ? "Soubory ke stažení" : "Downloads"), "Index", "Downloads", routeValues: new { filter = item.Code, beta = Request["beta"]}, htmlAttributes: null)
                 </td>
                 <td>
                 @if (ViewBag.lang == "cz")

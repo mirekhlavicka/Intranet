@@ -34,5 +34,9 @@ namespace IntranetPublic
         public virtual DbSet<File> Files { get; set; }
         public virtual DbSet<Cours> Courses { get; set; }
         public virtual DbSet<Download> Downloads { get; set; }
+        public virtual DbSet<Article> Articles { get; set; }
+        public virtual DbSet<ArticleSection> ArticleSections { get; set; }
+        public virtual DbSet<Chapter> Chapters { get; set; }
+        public virtual DbSet<Section> Sections { get; set; }
     }
 }

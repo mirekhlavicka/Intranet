@@ -1,0 +1,13 @@
+﻿@model IntranetPublic.Article
+
+@{
+    ViewBag.Title = Model.title;
+}
+
+<h2>@Model.title</h2>
+
+@foreach (var ch in Model.Chapters)
+{
+    @Html.Raw(ch.body)
+}
+

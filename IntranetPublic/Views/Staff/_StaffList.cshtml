@@ -57,7 +57,7 @@
 
     <a name="@("dep" + d.KOD)"></a>
     <div class="panel panel-info">
-        <div class="panel-heading"><h4>@d.NAZEV_1029</h4></div>
+        <div class="panel-heading"><h4>@(ViewBag.lang == "cz" ? d.NAZEV_1029: d.NAZEV_1033)</h4></div>
         <div class="panel-body">
 
             @foreach (var item in list)

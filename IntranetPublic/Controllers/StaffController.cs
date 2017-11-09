@@ -29,6 +29,10 @@ namespace IntranetPublic.Controllers
                 {
                     bool res = false;
                     s.JMENO = Regex.Replace(s.JMENO, search.ToAccentInsensitiveRegex(), m => { res = true; return String.Format("<mark>{0}</mark>", m.ToString()); }, RegexOptions.IgnoreCase);
+                    if((s.PRIJMENI + " " + s.KRESTNI).ToLower().StartsWith(search.ToLower()))
+                    {
+                        res = true;
+                    }
                     return res;
                 });
             }

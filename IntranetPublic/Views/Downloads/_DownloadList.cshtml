@@ -9,7 +9,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.description)
             </th>
-            <th width="190px">
+            <th width="150px">
                 @Html.DisplayNameFor(model => model.date)/@Html.DisplayNameFor(model => model.user_full_name)
             </th>
             <th width="140px">
@@ -25,7 +25,7 @@
             {
             <tr>
                 <th>
-                    @Html.Raw(item.title)
+                    @Html.Raw(item.title.Replace("_"," "))
                 </th>
                 <td>
                     @Html.Raw(item.description)

@@ -128,7 +128,7 @@ namespace Intranet.Controllers
                 .Select(u => new SelectListItem
                 {
                     Value = u.id_item.ToString(),
-                    Text =u.JMENO
+                    Text = u.PRIJMENI.ToUpper() + " " + u.KRESTNI// u.JMENO
                 })
                 .ToList();
 

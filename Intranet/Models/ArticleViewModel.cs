@@ -45,6 +45,8 @@ namespace Intranet.Models
 
         public string Author { get; set; }
 
+        [Required(ErrorMessage = "Musíte zadat text zprávy")]
+        [Display(Name = "Text zprávy")]
         public string Body { get; set; }
 
         public bool Important { get; set; }

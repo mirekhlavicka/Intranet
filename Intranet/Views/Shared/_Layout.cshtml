@@ -34,7 +34,7 @@
                             <li class="dropdown @(Url.MakeActiveClass("Articles", "45"))">@Html.ActionLink("Projekty a granty", "Index", "Articles", routeValues: new { id = 45 }, htmlAttributes: new { id = "hpLink120" })</li>
 
                             
-                            @if (User.Identity.IsAuthenticated &&  new int[] {12, 34, 68 }.Contains(Int32.Parse(User.Identity.GetUserId())))
+                            @if (User.Identity.IsAuthenticated &&  new int[] {12, 34, 68, 2, 78 }.Contains(Int32.Parse(User.Identity.GetUserId())))
                             {
                             <li class="dropdown @(Url.MakeActiveClass("Articles", "27"))">@Html.ActionLink("Aktuality pro studenty", "Index", "Articles", routeValues: new { id = 27 }, htmlAttributes: new { id = "hpLink1110" })</li>
                             <li class="dropdown @(Url.MakeActiveClass("Articles", "32"))">@Html.ActionLink("Pro doktorandy", "Index", "Articles", routeValues: new { id = 32 }, htmlAttributes: new { id = "hpLink1120" })</li>

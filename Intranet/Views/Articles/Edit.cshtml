@@ -106,7 +106,7 @@
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
     <script type="text/javascript">
-        var resize = function () { CKEDITOR.instances.Body.resize('100%', window.innerHeight - $(CKEDITOR.instances.Body.container.$).offset().top - 65, false) };
+        var resize = function () { CKEDITOR.instances.Body.resize('100%', Math.max(window.innerHeight - $(CKEDITOR.instances.Body.container.$).offset().top - 65, 500), false) };
 
         $(function () {
             CKEDITOR.on('instanceReady', function () {

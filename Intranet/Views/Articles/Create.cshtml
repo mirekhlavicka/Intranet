@@ -96,7 +96,7 @@
     <script type="text/javascript">
         $(function () {
             CKEDITOR.on('instanceReady', function () {
-                CKEDITOR.instances.Body.resize('100%', window.innerHeight - $(CKEDITOR.instances.Body.container.$).offset().top - 65, false)
+                CKEDITOR.instances.Body.resize('100%', Math.max(window.innerHeight - $(CKEDITOR.instances.Body.container.$).offset().top - 65, 500), false)
             });
 
             CKEDITOR.replace('Body', {

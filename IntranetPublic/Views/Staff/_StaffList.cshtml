@@ -4,7 +4,7 @@
     string[] topItems =
         {
             "Ředitel ústavu",
-            "Sekretářka ředitele",
+            "Asistentka administrativy",
             "Tajemník pro provoz",
             "Tajemník pro výuku",
             "Tajemník pro oborové studium",
@@ -24,6 +24,7 @@
         };
 
     ViewBag.itemCount = Model.Count();
+    ViewBag.hasTimeTable = new PubSystemEntities().FormItemFields.Where(fif => fif.id_fcontrol == 11).Select(fif => fif.strvalue).Distinct().ToArray();
 }
 
 @{

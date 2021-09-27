@@ -9,6 +9,15 @@
     </div>
 }
 
+@if (Model.ODBOR != "DK" && Model.FUNKCE2 != "")
+{
+    <div class="row">
+        <div class="col-md-12">
+            <strong>@(ViewBag.lang == "cz" ? Model.FUNKCE2 : Model.FUNKCE2_ENG)</strong>
+        </div>
+    </div>
+}
+
 
 <div class="panel-group">
     <div class="panel panel-default">
@@ -25,16 +34,25 @@
                     <span class="label label-default">@Model.MISTNOST</span>
                     @if (Model.ODBOR == "DK" && Model.FUNKCE2 != "")
                     {
-                        <span class="label label-success">@(ViewBag.lang == "cz" ? "Školitel" : "Supervisor") : @Model.FUNKCE2 </span>
+                        <span class="label label-success">@(ViewBag.lang == "cz" ? "Školitel" : "Supervisor") : @Html.Raw(Model.FUNKCE2) </span>
                     }
                 </div>
                 <div class="well well-sm" style="margin-bottom: 0px">
-                    @if (Model.ODBOR != "DK") { 
+                    @if (Model.ODBOR != "DK")
+                    {
                         <a href="@Model.WWW" target="_top">@(ViewBag.lang == "cz" ? "Osobní stránka" : "Home page")</a> @:&nbsp;| &nbsp;
                     }
                     <a href="https://www.fme.vutbr.cz/prdetail.html?pid=@Model.ID_OSOBY" target="_top">@(ViewBag.lang == "cz" ? "Fakultní stránka" : "Faculty page")</a> &nbsp;|&nbsp;
                     <a href="https://www.vutbr.cz/lide/nm-@Model.ID_OSOBY/publikace" target="_top">@(ViewBag.lang == "cz" ? "Publikace" : "Publications")</a> &nbsp;|&nbsp;
-                    @Html.ActionLink((ViewBag.lang == "cz" ? "Rozvrh" : "Time table"), "Index", "TimeTable", new { uid = Model.id_item, beta = Request["beta"] }, null) &nbsp;|&nbsp;
+                    @if (((string[])(ViewBag.hasTimeTable)).Contains(Model.id_item.ToString()))
+                    {
+                        @Html.ActionLink((ViewBag.lang == "cz" ? "Rozvrh" : "Time table"), "Index", "TimeTable", new { uid = Model.id_item, beta = Request["beta"] }, null)
+                    }
+                    else
+                    {
+                        <a href="https://www.vut.cz/teacher2/cs/rozvrh-osob/rozvrh/operation/rozvrh/per_id/@Model.ID_OSOBY/fakulta_id/4" target="_top">@(ViewBag.lang == "cz" ? "Rozvrh" : "Time table")</a>
+                    }
+                    &nbsp;| &nbsp;
                     @Html.ActionLink((ViewBag.lang == "cz" ? "Soubory ke stažení" : "Downloads"), "Index", "Downloads", new { id_item_user = Model.id_item, beta = Request["beta"] }, null)
                 </div>
             </div>

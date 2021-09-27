@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        <a href="https://www.vut.cz/teacher2/cs/rozvrh-osob/rozvrh/operation/rozvrh/per_id/@Model.ID_OSOBY/fakulta_id/4" target="_top">@(ViewBag.lang == "cz" ? "Rozvrh" : "Time table")</a>
+                        <a href="https://www.vut.cz/teacher2/@(ViewBag.lang == "cz" ? "cs" : "en")/rozvrh-osob/rozvrh/operation/rozvrh/per_id/@Model.ID_OSOBY/fakulta_id/4" target="_top">@(ViewBag.lang == "cz" ? "Rozvrh" : "Time table")</a>
                     }
                     &nbsp;| &nbsp;
                     @Html.ActionLink((ViewBag.lang == "cz" ? "Soubory ke stažení" : "Downloads"), "Index", "Downloads", new { id_item_user = Model.id_item, beta = Request["beta"] }, null)

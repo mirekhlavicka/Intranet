@@ -28,7 +28,7 @@
                 </a>
             </h4>
 
-            @if (Model.StaffInfo.ODBOR != "O")
+            @if (Model.StaffInfo.ODBOR != "O" && Model.StaffInfo.Department != null)
             {
                 <h5><span>@Model.StaffInfo.Department.NAZEV_1029</span></h5>
             }

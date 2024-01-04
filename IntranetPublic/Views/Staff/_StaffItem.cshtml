@@ -1,5 +1,7 @@
 ﻿@model IntranetPublic.StaffItem
 
+@{string uid = Guid.NewGuid().ToString("n").Substring(0, 8);}
+
 @if (Model.ODBOR != "DK" && Model.FUNKCE1 != "")
 {
     <div class="row">
@@ -23,10 +25,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" href="#@("collapse" + Model.id_item)">@Html.Raw(Model.JMENO)</a>
+                <a data-toggle="collapse" href="#@("collapse" + uid)">@Html.Raw(Model.JMENO)</a>
             </h4>
         </div>
-        <div id="@("collapse" + Model.id_item)" class="panel-collapse collapse @(ViewBag.itemCount == 1 ? "in": "")">
+        <div id="@("collapse" + uid)" class="panel-collapse collapse @(ViewBag.itemCount == 1 ? "in": "")">
             <div class="panel-body">
                 <div class="alert alert-info">
                     <a href="mailto:@Model.EMAIL" class="btn btn-default btn-xs" target="_top">@Model.EMAIL</a>
@@ -62,28 +64,28 @@
 
 
 @*<div class="row">
-    <div class="col-md-12">
-        <a href="javascript:void(0)" class="linkStaffItem" data-iditem="@Model.id_item">
-            @Html.Raw(Model.JMENO)
-        </a>
+        <div class="col-md-12">
+            <a href="javascript:void(0)" class="linkStaffItem" data-iditem="@Model.id_item">
+                @Html.Raw(Model.JMENO)
+            </a>
 
-        <div class="panel panel-info staffItem" style="display:none" data-iditem="@Model.id_item">
-            <div class="panel-body ">
-                <div>
-                    <a href="mailto:@Model.EMAIL" class="btn btn-default btn-xs">@Model.EMAIL</a>
-                    <span class="label label-default">@Model.TELEFON </span>&nbsp;
-                    <span class="label label-default">@Model.MISTNOST</span>
+            <div class="panel panel-info staffItem" style="display:none" data-iditem="@Model.id_item">
+                <div class="panel-body ">
+                    <div>
+                        <a href="mailto:@Model.EMAIL" class="btn btn-default btn-xs">@Model.EMAIL</a>
+                        <span class="label label-default">@Model.TELEFON </span>&nbsp;
+                        <span class="label label-default">@Model.MISTNOST</span>
 
-                </div>
+                    </div>
 
-                <div>
-                    <a href="@Model.WWW">Osobní stránka</a>&nbsp;|&nbsp;
-                    <a href="https://www.fme.vutbr.cz/prdetail.html?pid=@Model.ID_OSOBY">Fakultní stránka</a> &nbsp;|&nbsp;
-                    <a href="https://www.vutbr.cz/lide/nm-@Model.ID_OSOBY/publikace">Publikace</a> &nbsp;|&nbsp;
-                    @Html.ActionLink("Rozvrh", "Index", "TimeTable", new { uid = Model.id_item }, null) &nbsp;|&nbsp;
-                    @Html.ActionLink("Soubory ke stažení", "Index", "Downloads", new { id_item_user = Model.id_item }, null)
+                    <div>
+                        <a href="@Model.WWW">Osobní stránka</a>&nbsp;|&nbsp;
+                        <a href="https://www.fme.vutbr.cz/prdetail.html?pid=@Model.ID_OSOBY">Fakultní stránka</a> &nbsp;|&nbsp;
+                        <a href="https://www.vutbr.cz/lide/nm-@Model.ID_OSOBY/publikace">Publikace</a> &nbsp;|&nbsp;
+                        @Html.ActionLink("Rozvrh", "Index", "TimeTable", new { uid = Model.id_item }, null) &nbsp;|&nbsp;
+                        @Html.ActionLink("Soubory ke stažení", "Index", "Downloads", new { id_item_user = Model.id_item }, null)
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </div>*@

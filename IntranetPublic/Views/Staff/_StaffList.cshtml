@@ -4,13 +4,14 @@
     string[] topItems =
         {
             "Ředitel ústavu",
-            "Asistentka administrativy",
+            "Zástupce ředitele",
+            "Asistentka administrativy a ekonomická pracovnice",
             "Tajemník pro provoz",
             "Tajemník pro výuku",
             "Tajemník pro oborové studium",
-            "Ekonomická pracovnice",
+            //"Ekonomická pracovnice",
             "Knihovnice",
-            "Technický pracovník"
+            //"Technický pracovník"
         };
 
     string[] departments =
@@ -47,8 +48,8 @@
 @foreach (var d in (from d1 in departments join d2 in (IEnumerable<Department>)ViewBag.departments on d1 equals d2.KOD select d2))
 {
     var list = Model
-        .Where(i => !topItems.Contains(i.FUNKCE1) && i.ODBOR == d.KOD)
-        .OrderBy(m => m.FUNKCE1 != "" ? 0 : 1)
+        .Where(i => !(topItems.Contains(i.FUNKCE1) && i.ODBOR == "O") && i.ODBOR.Split(',').Select(s => s.Trim()).Contains(d.KOD))
+        .OrderBy(m => d.KOD != "DK" && m.FUNKCE1 != "" && !topItems.Contains(m.FUNKCE1) ? 0 : 1)
         .ThenBy(m => m.JMENO.ToLower().Contains("prof.") ? 0 : 1)
         .ThenBy(m => m.JMENO.ToLower().Contains("doc.") ? 0 : 1)
         .ThenBy(m => m.PRIJMENI).ToArray();
@@ -65,6 +66,11 @@
 
             @foreach (var item in list)
             {
+                if (topItems.Contains(item.FUNKCE1))
+                {
+                    item.FUNKCE1 = "";
+                }
+
                 Html.RenderPartial("_StaffItem", item);
             }
         </div>
